@@ -1,66 +1,53 @@
-import { Card, CardContent } from "@/components/ui/card"
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel"
-import { Quote } from "lucide-react"
+import Slider from 'react-slick';
 
 const testimonials = [
     {
-        name: "Sarah Johnson",
-        designation: "CEO, TechCorp",
-        content: "This product has revolutionized our workflow. It's intuitive, powerful, and has saved us countless hours.",
-        avatar: "https://images.pexels.com/photos/11452464/pexels-photo-11452464.jpeg?auto=compress&cs=tinysrgb&w=600",
+        name: "Arshad Nadeem",
+        designation: "Gold Medalist",
+        testimonial: "SkyEstate have the best dealers and the locations are the best.",
     },
     {
-        name: "Michael Chen",
-        designation: "Lead Developer, InnoSoft",
-        content: "I've never seen a tool so well-designed. It's a game-changer for our development team.",
-        avatar: "https://images.pexels.com/photos/3389111/pexels-photo-3389111.jpeg?auto=compress&cs=tinysrgb&w=600",
+        name: "Jane Smith",
+        designation: "Marketing Head, Don Inc.",
+        testimonial: "The staff I saw at SkyEstate is really highly qualified for this field.",
     },
     {
-        name: "Emily Rodriguez",
-        designation: "Marketing Director, BrandBurst",
-        content: "The analytics features are outstanding. We've gained invaluable insights that have boosted our campaigns significantly.",
-        avatar: "https://images.pexels.com/photos/12472870/pexels-photo-12472870.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        name: "Diljit Singh",
+        designation: "Famous Singer",
+        testimonial: "I had the best experience of buying property from SkyEstate.",
     },
-]
+];
 
 export default function TestimonialCarousel() {
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2500,
+        arrows: false,
+    };
+
     return (
-        <Carousel className="w-full max-w-xs sm:max-w-sm md:max-w-xl lg:max-w-xl xl:max-w-xl mx-auto">
-            <CarouselContent>
-                {testimonials.map((testimonial, index) => (
-                    <CarouselItem key={index}>
-                        <Card className="bg-primary/5 border-none">
-                            <CardContent className="flex flex-col items-center justify-center p-6">
-                                <Quote className="text-primary w-12 h-12 mb-4" />
-                                <p className="text-center mb-4 italic text-muted-foreground">
-                                    "{testimonial.content}"
-                                </p>
-                                <div className="flex items-center space-x-4">
-                                    <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                                        <img
-                                            src={testimonial.avatar}
-                                            alt={testimonial.name}
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-semibold">{testimonial.name}</h3>
-                                        <p className="text-sm text-muted-foreground">{testimonial.designation}</p>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-        </Carousel>
-    )
+        <div className="py-16 bg-gray-50">
+            <div className="max-w-4xl mx-auto px-6">
+                <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-10 tracking-tight">
+                    What Our Clients Are Saying
+                </h2>
+                <Slider {...settings}>
+                    {
+                        testimonials.map((item, index) => (
+                            <div key={index} className="p-8 bg-white border border-gray-200 rounded-lg text-center transform transition-all duration-500 hover:shadow-lg">
+                                <p className="text-xl text-gray-700 mb-6 leading-relaxed">"{item.testimonial}"</p>
+                                <h3 className="text-2xl font-semibold text-gray-900">{item.name}</h3>
+                                <p className="text-gray-500 text-sm">{item.designation}</p>
+                            </div>
+                        ))
+                    }
+                </Slider>
+            </div>
+        </div>
+    );
 }

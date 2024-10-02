@@ -37,9 +37,7 @@ const Blogs = () => {
                                 <img
                                     src={blog.image}
                                     alt={blog.title}
-                                    //   width={300}
-                                    //   height={200}
-                                    className="h-[200px] w-full object-cover md:w-48"
+                                    className="h-[200px] w-full object-cover md:w-80"
                                 />
                             </div>
                             <div className="p-6">

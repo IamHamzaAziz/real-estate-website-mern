@@ -8,6 +8,7 @@ import SignIn from './pages/SignIn';
 import Team from './pages/Team';
 import Properties from './pages/Properties';
 import Blogs from './pages/Blogs';
+import VerifyOTP from './pages/VerifyOTP';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/team' element={<Team />} />
           <Route path='/properties' element={<Properties />} />
           <Route path='/blogs' element={<Blogs />} />
+          <Route path='/verify-otp' element={<VerifyOTP />} />
         </Route>
       </Routes>
     </BrowserRouter>

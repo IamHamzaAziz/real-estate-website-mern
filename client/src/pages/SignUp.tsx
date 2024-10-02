@@ -1,13 +1,89 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import React, { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
+
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+
 import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { ThreeCircles } from 'react-loader-spinner'
+import axios from 'axios'
+
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SignUp = () => {
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [password2, setPassword2] = useState('')
+
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
+    const [loading, setLoading] = useState(false)
+
+    const navigate = useNavigate()
+
+    const failure = (message: String = 'Failed to send your message') => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+
+        setLoading(true)
+
+        if (!name || !email || !password || !password2) {
+            failure('All fields are required')
+            setLoading(false)
+            return
+        }
+
+        if (password !== password2) {
+            failure('Passwords do not match')
+            setLoading(false)
+            return
+        }
+
+        // compare email with an email regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(email)) {
+            failure('Invalid email address')
+            setLoading(false)
+            return
+        }
+
+        if (password.length < 6) {
+            failure('Password must be at least 6 characters long')
+            setLoading(false)
+            return
+        }
+
+        try {
+            await axios.post('http://localhost:4000/api/auth/sign-up', { name, email, password })
+                .then(response => {
+                    if (response.status === 200) {
+                        navigate('/verify-otp', { state: { isFromAuth: true, email: email } })
+                    }
+                })
+
+            setLoading(false)
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+        }
+    }
 
     return (
         <div className="flex min-h-screen">
@@ -26,7 +102,7 @@ const SignUp = () => {
                     <div className="text-center">
                         <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Create your account</h2>
                     </div>
-                    <form className="mt-8 space-y-6" action="#" method="POST">
+                    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                         <div className="space-y-4 rounded-md shadow-sm">
                             <div>
                                 <Label htmlFor="name" className="sr-only">
@@ -39,6 +115,8 @@ const SignUp = () => {
                                     required
                                     className="relative block w-full"
                                     placeholder="Name"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
                             <div>
@@ -53,6 +131,8 @@ const SignUp = () => {
                                     required
                                     className="relative block w-full"
                                     placeholder="Email address"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="relative">
@@ -67,6 +147,8 @@ const SignUp = () => {
                                     required
                                     className="relative block w-full pr-10"
                                     placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <button
                                     type="button"
@@ -93,6 +175,8 @@ const SignUp = () => {
                                     required
                                     className="relative block w-full pr-10"
                                     placeholder="Re-enter Password"
+                                    value={password2}
+                                    onChange={(e) => setPassword2(e.target.value)}
                                 />
                                 <button
                                     type="button"
@@ -110,9 +194,17 @@ const SignUp = () => {
                         </div>
 
                         <div>
-                            <Button type="submit" className="w-full bg-p1 hover:bg-p2">
-                                Sign Up
-                            </Button>
+                            {
+                                loading ? (
+                                    <Button className="w-full bg-p1 hover:bg-p2">
+                                        <ThreeCircles color="white" height={15} />
+                                    </Button>
+                                ) : (
+                                    <Button type="submit" className="w-full bg-p1 hover:bg-p2">
+                                        Sign Up
+                                    </Button>
+                                )
+                            }
                         </div>
                     </form>
                     <div className="text-center text-sm">
@@ -123,6 +215,8 @@ const SignUp = () => {
                     </div>
                 </div>
             </div>
+
+            <ToastContainer />
         </div>
     )
 }

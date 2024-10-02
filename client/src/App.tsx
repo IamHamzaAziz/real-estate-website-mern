@@ -1,19 +1,25 @@
 import './App.css'
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import CounterSection from './components/CounterSection'
-import TestimonialCarousel from './components/Testimonial'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import PageLayout from './layouts/PageLayout';
+import Home from './pages/Home';
+import Contact from './pages/Contact';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
+import Team from './pages/Team';
 
 function App() {
   return (
-    <div className='text-center'>
-      <Navbar />
-      <Hero />
-      <CounterSection />
-      <TestimonialCarousel />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<PageLayout />}>
+          <Route index element={<Home />} />
+          <Route path='/contact' element={<Contact />} />
+          <Route path='/sign-up' element={<SignUp />} />
+          <Route path='/sign-in' element={<SignIn />} />
+          <Route path='/team' element={<Team />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

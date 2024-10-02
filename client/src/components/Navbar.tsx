@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Home, Building2, BookOpen, Users, Phone, LogIn, Menu, Building } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Link } from 'react-router-dom'
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
@@ -9,31 +10,33 @@ export default function Navbar() {
     return (
         <nav className="bg-p1 text-white p-4">
             <div className="container mx-auto flex justify-between items-center">
-                <span className="flex items-center space-x-2">
+                <Link to={'/'} className="flex items-center space-x-2">
                     <Building className="h-8 w-8" />
                     <span className="text-xl font-bold">SkyEstate</span>
-                </span>
+                </Link>
 
                 <div className="hidden md:flex items-center space-x-6">
-                    <span className="hover:text-p2 cursor-pointer font-bold">
+                    <Link to={'/'} className="hover:text-p2 cursor-pointer font-bold">
                         Home
-                    </span>
+                    </Link>
                     <span className="hover:text-p2 cursor-pointer font-bold">
                         Properties
                     </span>
                     <span className="hover:text-p2 cursor-pointer font-bold">
                         Blogs
                     </span>
-                    <span className="hover:text-p2 cursor-pointer font-bold">
-                        Teams
-                    </span>
-                    <span className="hover:text-p2 cursor-pointer font-bold">
+                    <Link to={'/team'} className="hover:text-p2 cursor-pointer font-bold">
+                        Team
+                    </Link>
+                    <Link to={'/contact'} className="hover:text-p2 cursor-pointer font-bold">
                         Contact
-                    </span>
+                    </Link>
 
-                    <Button variant="outline" className="text-p1 bg-white">
-                        <LogIn className="mr-2 h-4 w-4" /> Sign In
-                    </Button>
+                    <Link to={'/sign-in'}>
+                        <Button variant="outline" className="text-p1 bg-white">
+                            <LogIn className="mr-2 h-4 w-4" /> Sign In
+                        </Button>
+                    </Link>
                 </div>
 
                 <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -51,13 +54,13 @@ export default function Navbar() {
                             </span>
                         </div>
                         <div className="space-y-4">
-                            <span
+                            <Link to={'/'}
                                 className="flex items-center space-x-2 hover:text-gray-300"
-                                onClick={() => setIsOpen(false)}
+                                onClick={() => { setIsOpen(false); }}
                             >
                                 <Home className="h-5 w-5" />
                                 <span>Home</span>
-                            </span>
+                            </Link>
                             <span
                                 className="flex items-center space-x-2 hover:text-gray-300"
                                 onClick={() => setIsOpen(false)}
@@ -72,20 +75,20 @@ export default function Navbar() {
                                 <BookOpen className="h-5 w-5" />
                                 <span>Blogs</span>
                             </span>
-                            <span
+                            <Link to={'/team'}
                                 className="flex items-center space-x-2 hover:text-gray-300"
                                 onClick={() => setIsOpen(false)}
                             >
                                 <Users className="h-5 w-5" />
                                 <span>Team</span>
-                            </span>
-                            <span
+                            </Link>
+                            <Link to={'/contact'}
                                 className="flex items-center space-x-2 hover:text-gray-300"
                                 onClick={() => setIsOpen(false)}
                             >
                                 <Phone className="h-5 w-5" />
                                 <span>Contact</span>
-                            </span>
+                            </Link>
 
                             <Button variant="outline" className="w-full border-white text-p1">
                                 <LogIn className="mr-2 h-4 w-4" /> Sign In

@@ -3,7 +3,11 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Facebook, Instagram, Linkedin } from "lucide-react"
+import { FaFacebook } from "react-icons/fa6";
+import { FaWhatsapp } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
+import { FaInstagram } from "react-icons/fa6";
+import { FaLinkedinIn } from "react-icons/fa";
 
 const Contact = () => {
     const [name, setName] = useState("")
@@ -69,16 +73,24 @@ const Contact = () => {
                         <div className="pt-4">
                             <h3 className="text-lg font-semibold mb-2">Connect with us</h3>
                             <div className="flex space-x-4">
-                                <a href="https://facebook.com/" target='_blank' className="text-gray-600 hover:text-gray-900">
-                                    <Facebook className="h-6 w-6" />
+                                <a href="https://facebook.com/" target='_blank'>
+                                    <FaFacebook className="h-6 w-6" />
                                     <span className="sr-only">Facebook</span>
                                 </a>
-                                <a href="https://instagram.com/__hamzeee" target='_blank' className="text-gray-600 hover:text-gray-900">
-                                    <Instagram className="h-6 w-6" />
+                                <a href="https://wa.me/923086646421" target='_blank'>
+                                    <FaWhatsapp className="h-6 w-6" />
+                                    <span className="sr-only">WhatsApp</span>
+                                </a>
+                                <a href="https://linkedin.com/in/iamhamzaaziz" target='_blank'>
+                                    <FaXTwitter className="h-6 w-6" />
+                                    <span className="sr-only">Twitter</span>
+                                </a>
+                                <a href="https://instagram.com/__hamzeee" target='_blank'>
+                                    <FaInstagram className="h-6 w-6" />
                                     <span className="sr-only">Instagram</span>
                                 </a>
-                                <a href="https://linkedin.com/in/iamhamzaaziz" target='_blank' className="text-gray-600 hover:text-gray-900">
-                                    <Linkedin className="h-6 w-6" />
+                                <a href="https://linkedin.com/in/iamhamzaaziz" target='_blank'>
+                                    <FaLinkedinIn className="h-6 w-6" />
                                     <span className="sr-only">LinkedIn</span>
                                 </a>
                             </div>

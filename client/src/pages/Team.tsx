@@ -1,6 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { Facebook, Linkedin, MessageCircle } from "lucide-react"
 import { Link } from "react-router-dom"
+import { FaLinkedin } from "react-icons/fa";
+import { FaWhatsappSquare } from "react-icons/fa";
+import { FaFacebookSquare } from "react-icons/fa";
 
 const teamMembers = [
     {
@@ -9,8 +11,8 @@ const teamMembers = [
         intro: "With over 15 years of experience in the luxury real estate market, Emily has a keen eye for property valuation and negotiation.",
         image: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         stats: "Closed $50M+ in sales",
-        whatsapp: "https://wa.me/1234567890",
-        linkedin: "https://www.linkedin.com/",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -19,8 +21,8 @@ const teamMembers = [
         intro: "Michael specializes in commercial real estate, helping businesses find the perfect locations for their operations.",
         image: 'https://images.pexels.com/photos/428364/pexels-photo-428364.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         stats: "Managed 100+ commercial leases",
-        whatsapp: "https://wa.me/2345678901",
-        linkedin: "https://www.linkedin.com/in/michael-chen",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -29,8 +31,8 @@ const teamMembers = [
         intro: "Sarah is passionate about helping first-time homebuyers navigate the complex process of purchasing their dream home.",
         image: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         stats: "Assisted 200+ first-time buyers",
-        whatsapp: "https://wa.me/3456789012",
-        linkedin: "https://www.linkedin.com/in/sarah-rodriguez",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -39,8 +41,8 @@ const teamMembers = [
         intro: "David's expertise lies in identifying lucrative investment opportunities in the real estate market.",
         image: 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=600',
         stats: "Managed $30M+ in property investments",
-        whatsapp: "https://wa.me/4567890123",
-        linkedin: "https://www.linkedin.com/in/david-patel",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -49,8 +51,8 @@ const teamMembers = [
         intro: "Jessica caters to high-net-worth individuals, providing white-glove service in the luxury real estate market.",
         image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600',
         stats: "Sold 20+ multi-million dollar properties",
-        whatsapp: "https://wa.me/5678901234",
-        linkedin: "https://www.linkedin.com/in/jessica-lee",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -59,8 +61,8 @@ const teamMembers = [
         intro: "Robert oversees our property management division, ensuring smooth operations for landlords and tenants alike.",
         image: 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=600',
         stats: "Managed 500+ rental units",
-        whatsapp: "https://wa.me/6789012345",
-        linkedin: "https://www.linkedin.com/in/robert-johnson",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -69,8 +71,8 @@ const teamMembers = [
         intro: "Olivia helps families and professionals relocate to new cities, providing comprehensive support throughout the process.",
         image: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         stats: "Assisted 150+ relocations",
-        whatsapp: "https://wa.me/7890123456",
-        linkedin: "https://www.linkedin.com/in/olivia-martinez",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -79,8 +81,8 @@ const teamMembers = [
         intro: "Thomas provides legal expertise to our team and clients, ensuring all transactions are smooth and compliant.",
         image: 'https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&cs=tinysrgb&w=600',
         stats: "Handled 300+ real estate legal cases",
-        whatsapp: "https://wa.me/8901234567",
-        linkedin: "https://www.linkedin.com/in/thomas-wilson",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -89,8 +91,8 @@ const teamMembers = [
         intro: "Sophia leads our marketing efforts, creating innovative strategies to showcase our properties and reach potential buyers.",
         image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600',
         stats: "Increased lead generation by 200%",
-        whatsapp: "https://wa.me/9012345678",
-        linkedin: "https://www.linkedin.com/in/sophia-kim",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -99,8 +101,8 @@ const teamMembers = [
         intro: "Daniel works closely with our clients to secure the best mortgage rates and terms for their property purchases.",
         stats: "Facilitated $100M+ in mortgages",
         image: 'https://images.pexels.com/photos/428364/pexels-photo-428364.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-        whatsapp: "https://wa.me/0123456789",
-        linkedin: "https://www.linkedin.com/in/daniel-brown",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -109,8 +111,8 @@ const teamMembers = [
         intro: "Emma provides expert advice on interior design and staging, helping our properties stand out in the market.",
         image: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=600',
         stats: "Staged 100+ homes for sale",
-        whatsapp: "https://wa.me/1234567890",
-        linkedin: "https://www.linkedin.com/in/emma-taylor",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -119,8 +121,8 @@ const teamMembers = [
         intro: "Alexander provides in-depth market analysis and forecasting to inform our investment strategies and client advice.",
         image: 'https://images.pexels.com/photos/428364/pexels-photo-428364.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         stats: "Produced 50+ market reports",
-        whatsapp: "https://wa.me/2345678901",
-        linkedin: "https://www.linkedin.com/in/alexander-wright",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     },
     {
@@ -129,8 +131,8 @@ const teamMembers = [
         intro: "Isabella ensures our clients receive top-notch service throughout their real estate journey with our team.",
         image: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
         stats: "Maintained 98% client satisfaction rate",
-        whatsapp: "https://wa.me/3456789012",
-        linkedin: "https://www.linkedin.com/in/isabella-garcia",
+        whatsapp: "https://wa.me/923086646421",
+        linkedin: "https://www.linkedin.com/in/iamhamzaaziz",
         facebook: "https://www.facebook.com/"
     }
 ]
@@ -156,15 +158,15 @@ export default function Team() {
                                     <p className="text-sm font-semibold mb-4">{member.stats}</p>
                                     <div className="flex space-x-4">
                                         <Link to={member.whatsapp} target="_blank" rel="noopener noreferrer">
-                                            <MessageCircle className="h-6 w-6 text-green-600 hover:text-green-700" />
+                                            <FaWhatsappSquare className="h-8 w-8 text-green-600 hover:text-green-700" />
                                             <span className="sr-only">WhatsApp</span>
                                         </Link>
                                         <Link to={member.linkedin} target="_blank" rel="noopener noreferrer">
-                                            <Linkedin className="h-6 w-6 text-blue-600 hover:text-blue-700" />
+                                            <FaLinkedin className="h-8 w-8 text-blue-600 hover:text-blue-700" />
                                             <span className="sr-only">LinkedIn</span>
                                         </Link>
                                         <Link to={member.facebook} target="_blank" rel="noopener noreferrer">
-                                            <Facebook className="h-6 w-6 text-blue-800 hover:text-blue-900" />
+                                            <FaFacebookSquare className="h-8 w-8 text-blue-800 hover:text-blue-900" />
                                             <span className="sr-only">Facebook</span>
                                         </Link>
                                     </div>

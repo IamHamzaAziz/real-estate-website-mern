@@ -14,9 +14,9 @@ const SignUp = () => {
             {/* Left side with image */}
             <div className="hidden w-1/2 bg-gray-100 lg:block">
                 <img
-                    src="https://images.pexels.com/photos/783745/pexels-photo-783745.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    src="https://images.pexels.com/photos/3625734/pexels-photo-3625734.jpeg?auto=compress&cs=tinysrgb&w=600"
                     alt="Property dealers"
-                    className="h-full w-full object-cover"
+                    className="h-screen w-full object-cover"
                 />
             </div>
 

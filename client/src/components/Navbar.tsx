@@ -19,12 +19,12 @@ export default function Navbar() {
                     <Link to={'/'} className="hover:text-p2 cursor-pointer font-bold">
                         Home
                     </Link>
-                    <span className="hover:text-p2 cursor-pointer font-bold">
+                    <Link to={'/properties'} className="hover:text-p2 cursor-pointer font-bold">
                         Properties
-                    </span>
-                    <span className="hover:text-p2 cursor-pointer font-bold">
+                    </Link>
+                    <Link to={'/blogs'} className="hover:text-p2 cursor-pointer font-bold">
                         Blogs
-                    </span>
+                    </Link>
                     <Link to={'/team'} className="hover:text-p2 cursor-pointer font-bold">
                         Team
                     </Link>
@@ -61,20 +61,20 @@ export default function Navbar() {
                                 <Home className="h-5 w-5" />
                                 <span>Home</span>
                             </Link>
-                            <span
+                            <Link to={'/properties'}
                                 className="flex items-center space-x-2 hover:text-gray-300"
                                 onClick={() => setIsOpen(false)}
                             >
                                 <Building2 className="h-5 w-5" />
                                 <span>Properties</span>
-                            </span>
-                            <span
+                            </Link>
+                            <Link to={'/blogs'}
                                 className="flex items-center space-x-2 hover:text-gray-300"
                                 onClick={() => setIsOpen(false)}
                             >
                                 <BookOpen className="h-5 w-5" />
                                 <span>Blogs</span>
-                            </span>
+                            </Link>
                             <Link to={'/team'}
                                 className="flex items-center space-x-2 hover:text-gray-300"
                                 onClick={() => setIsOpen(false)}

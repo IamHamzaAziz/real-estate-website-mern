@@ -15,7 +15,7 @@ const SignIn = () => {
                 <img
                     src="https://images.pexels.com/photos/415687/pexels-photo-415687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                     alt="Property dealers"
-                    className="h-full w-full object-cover"
+                    className="h-screen w-full object-cover"
                 />
             </div>
 

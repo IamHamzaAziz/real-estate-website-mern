@@ -79,8 +79,11 @@ const SignUp = () => {
                 })
 
             setLoading(false)
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
+            if (error.status === 400) {
+                failure(error.response.data.message)
+            }
             setLoading(false)
         }
     }

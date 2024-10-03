@@ -5,8 +5,9 @@ const userSchema = new Schema(
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    is_verified: { type: Boolean, required: true, default: false },
-    is_admin: { type: Boolean, default: false },
+    isVerified: { type: Boolean, required: true, default: false },
+    isAdmin: { type: Boolean, default: false },
+    savedBlogs: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
   },
   {
     timestamps: true,

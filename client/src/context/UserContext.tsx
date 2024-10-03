@@ -1,10 +1,10 @@
 import React, { createContext, useState } from "react";
 
 interface UserInfoInterface {
+    _id?: string,
     email?: string,
     name?: string,
     isAdmin?: boolean,
-    isVerified?: boolean
 }
 
 interface UserContextInterface {
@@ -17,7 +17,7 @@ export const UserContext = createContext<UserContextInterface>({
     setUserInfo: () => { }
 });
 
-export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+export const UserContextProvider = ({ children }: { children: React.ReactNode }) => {
     const [userInfo, setUserInfo] = useState<UserInfoInterface>({});
 
     return (

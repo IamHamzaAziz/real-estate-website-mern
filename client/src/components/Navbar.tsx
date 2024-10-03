@@ -18,13 +18,32 @@ export default function Navbar() {
     const { setUserInfo, userInfo } = useContext(UserContext)
 
     useEffect(() => {
-        axios.get('http://localhost:4000/account/profile', { withCredentials: true })
-            .then((response) => {
-                setUserInfo(response.data)
-            })
+        const checkLogin = async () => {
+            await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/profile`, { withCredentials: true })
+                .then((response) => {
+                    console.log(response);
+                    setUserInfo(response.data)
+                })
+                .catch((error) => console.log(error))
+        }
+
+        checkLogin()
     }, [])
 
     const email = userInfo ? userInfo.email : null
+
+    const logout = async () => {
+        try {
+            await axios.post('http://localhost:4000/api/auth/logout', {}, { withCredentials: true })
+                .then(() => {
+                    setUserInfo({})
+                })
+
+            console.log('Logout successful')
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <nav className="bg-p1 text-white p-4">
@@ -68,7 +87,7 @@ export default function Navbar() {
                                         <BookmarkIcon className="mr-2 h-4 w-4" />
                                         <span>Saved Properties</span>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem>
+                                    <DropdownMenuItem onClick={logout}>
                                         <LogOut className="mr-2 h-4 w-4" />
                                         <span>Log out</span>
                                     </DropdownMenuItem>
@@ -82,7 +101,6 @@ export default function Navbar() {
                             </Link>
                         )
                     }
-
                 </div>
 
                 <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -145,7 +163,7 @@ export default function Navbar() {
                                         <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => setIsOpen(false)}>
                                             <BookmarkIcon className="mr-2 h-4 w-4" /> Saved Properties
                                         </Button>
-                                        <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => { setIsOpen(false); }}>
+                                        <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => { logout(); setIsOpen(false); }}>
                                             <LogOut className="mr-2 h-4 w-4" /> Log out
                                         </Button>
                                     </>

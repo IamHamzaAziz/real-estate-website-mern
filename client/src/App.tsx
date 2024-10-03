@@ -9,23 +9,26 @@ import Team from './pages/Team';
 import Properties from './pages/Properties';
 import Blogs from './pages/Blogs';
 import VerifyOTP from './pages/VerifyOTP';
+import { UserContextProvider } from './context/UserContext';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<PageLayout />}>
-          <Route index element={<Home />} />
-          <Route path='/contact' element={<Contact />} />
-          <Route path='/sign-up' element={<SignUp />} />
-          <Route path='/sign-in' element={<SignIn />} />
-          <Route path='/team' element={<Team />} />
-          <Route path='/properties' element={<Properties />} />
-          <Route path='/blogs' element={<Blogs />} />
-          <Route path='/verify-otp' element={<VerifyOTP />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <UserContextProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<PageLayout />}>
+            <Route index element={<Home />} />
+            <Route path='/contact' element={<Contact />} />
+            <Route path='/sign-up' element={<SignUp />} />
+            <Route path='/sign-in' element={<SignIn />} />
+            <Route path='/team' element={<Team />} />
+            <Route path='/properties' element={<Properties />} />
+            <Route path='/blogs' element={<Blogs />} />
+            <Route path='/verify-otp' element={<VerifyOTP />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </UserContextProvider>
   )
 }
 

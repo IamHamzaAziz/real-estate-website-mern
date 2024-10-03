@@ -1,12 +1,70 @@
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useContext, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
+import axios from "axios"
+import { ThreeCircles } from "react-loader-spinner"
+import { Bounce, toast, ToastContainer } from "react-toastify"
+import { UserContext } from "@/context/UserContext"
 
 const SignIn = () => {
     const [showPassword, setShowPassword] = useState(false)
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const [loading, setLoading] = useState(false)
+
+    const { setUserInfo } = useContext(UserContext)
+
+    const navigate = useNavigate()
+
+    const failure = (message: String = 'Failed to send your message') => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+
+        setLoading(true)
+
+        if (!email || !password) {
+            failure('All fields are required')
+            setLoading(false)
+            return
+        }
+
+        try {
+            await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/sign-in`, { email, password }, { withCredentials: true })
+                .then(response => {
+                    if (response.status === 200) {
+                        console.log(response.data);
+                        setUserInfo(response.data)
+                        navigate('/')
+                    }
+                })
+        } catch (error: any) {
+            console.log(error)
+            if (error.status === 400) {
+                failure(error.response.data.message)
+            } else if (error.status === 401) {
+                navigate('/verify-otp', { state: { isFromAuth: true, email: email } })
+            }
+            setLoading(false)
+        }
+    }
 
     return (
         <div className="flex min-h-screen">
@@ -25,7 +83,7 @@ const SignIn = () => {
                     <div className="text-center">
                         <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Sign In to SkyEstates</h2>
                     </div>
-                    <form className="mt-8 space-y-6" action="#" method="POST">
+                    <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                         <div className="space-y-4 rounded-md shadow-sm">
                             <div>
                                 <Label htmlFor="email-address" className="sr-only">
@@ -39,6 +97,8 @@ const SignIn = () => {
                                     required
                                     className="relative block w-full"
                                     placeholder="Email address"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
                             </div>
                             <div className="relative">
@@ -53,6 +113,8 @@ const SignIn = () => {
                                     required
                                     className="relative block w-full pr-10"
                                     placeholder="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <button
                                     type="button"
@@ -70,9 +132,18 @@ const SignIn = () => {
                         </div>
 
                         <div>
-                            <Button type="submit" className="w-full bg-p1 hover:bg-p2">
-                                Sign In
-                            </Button>
+                            {
+                                loading ? (
+                                    <Button className="w-full bg-p1 hover:bg-p2">
+                                        <ThreeCircles height={15} color="white" />
+                                    </Button>
+                                ) : (
+
+                                    <Button type="submit" className="w-full bg-p1 hover:bg-p2">
+                                        Sign In
+                                    </Button>
+                                )
+                            }
                         </div>
                     </form>
                     <div className="text-center text-sm">
@@ -83,6 +154,8 @@ const SignIn = () => {
                     </div>
                 </div>
             </div>
+
+            <ToastContainer />
         </div>
     )
 }

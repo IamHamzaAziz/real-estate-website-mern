@@ -1,11 +1,30 @@
-import { useState } from 'react'
-import { Home, Building2, BookOpen, Users, Phone, LogIn, Menu, Building } from 'lucide-react'
+import { useState, useContext, useEffect } from 'react'
+import { Home, Building2, BookOpen, Users, Phone, LogIn, Menu, Building, User, BookmarkIcon, LogOut } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link } from 'react-router-dom'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { UserContext } from '@/context/UserContext'
+import axios from 'axios'
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
+
+    const { setUserInfo, userInfo } = useContext(UserContext)
+
+    useEffect(() => {
+        axios.get('http://localhost:4000/account/profile', { withCredentials: true })
+            .then((response) => {
+                setUserInfo(response.data)
+            })
+    }, [])
+
+    const email = userInfo ? userInfo.email : null
 
     return (
         <nav className="bg-p1 text-white p-4">
@@ -32,11 +51,38 @@ export default function Navbar() {
                         Contact
                     </Link>
 
-                    <Link to={'/sign-in'}>
-                        <Button variant="outline" className="text-p1 bg-white">
-                            <LogIn className="mr-2 h-4 w-4" /> Sign In
-                        </Button>
-                    </Link>
+                    {
+                        email ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button variant="outline" className="border-white text-p1">
+                                        <User className="mr-2 h-4 w-4" /> Profile
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="w-56" align="end" forceMount>
+                                    <DropdownMenuItem>
+                                        <User className="mr-2 h-4 w-4" />
+                                        <span>My Account</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <BookmarkIcon className="mr-2 h-4 w-4" />
+                                        <span>Saved Properties</span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
+                                        <LogOut className="mr-2 h-4 w-4" />
+                                        <span>Log out</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <Link to={'/sign-in'}>
+                                <Button variant="outline" className="text-p1 bg-white">
+                                    <LogIn className="mr-2 h-4 w-4" /> Sign In
+                                </Button>
+                            </Link>
+                        )
+                    }
+
                 </div>
 
                 <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -90,9 +136,27 @@ export default function Navbar() {
                                 <span>Contact</span>
                             </Link>
 
-                            <Button variant="outline" className="w-full border-white text-p1">
-                                <LogIn className="mr-2 h-4 w-4" /> Sign In
-                            </Button>
+                            {
+                                email ? (
+                                    <>
+                                        <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => setIsOpen(false)}>
+                                            <User className="mr-2 h-4 w-4" /> My Account
+                                        </Button>
+                                        <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => setIsOpen(false)}>
+                                            <BookmarkIcon className="mr-2 h-4 w-4" /> Saved Properties
+                                        </Button>
+                                        <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => { setIsOpen(false); }}>
+                                            <LogOut className="mr-2 h-4 w-4" /> Log out
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <Link to={'/sign-in'} onClick={() => setIsOpen(false)}>
+                                        <Button variant="outline" className="w-full border-white text-p1 mt-4">
+                                            <LogIn className="mr-2 h-4 w-4" /> Sign In
+                                        </Button>
+                                    </Link>
+                                )
+                            }
                         </div>
                     </SheetContent>
                 </Sheet>

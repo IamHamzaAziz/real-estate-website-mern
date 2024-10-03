@@ -8,7 +8,9 @@ import OTP from "../models/OTPModel.js";
 import otpGenerator from "otp-generator";
 
 dotenv.config();
+
 const salt = bycrypt.genSaltSync(10);
+const secret = process.env.SECRET;
 
 const authRouter = express();
 
@@ -96,6 +98,19 @@ authRouter.post("/verify-otp", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server Error" });
+  }
+});
+
+authRouter.get("/profile", async (req, res) => {
+  try {
+    const { token } = req.cookies;
+
+    jwt.verify(token, secret, {}, (err, info) => {
+      if (err) throw err;
+      res.json(info);
+    });
+  } catch (error) {
+    res.status(500).json(error);
   }
 });
 

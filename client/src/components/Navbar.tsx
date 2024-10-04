@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { Home, Building2, BookOpen, Users, Phone, LogIn, Menu, Building, User, BookmarkIcon, LogOut } from 'lucide-react'
+import { Home, Building2, BookOpen, Users, Phone, LogIn, Menu, Building, User, BookmarkIcon, Gauge, LogOut } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link } from 'react-router-dom'
@@ -31,6 +31,7 @@ export default function Navbar() {
     }, [])
 
     const email = userInfo ? userInfo.email : null
+    const isAdmin = userInfo ? userInfo.isAdmin : false
 
     const logout = async () => {
         try {
@@ -87,7 +88,17 @@ export default function Navbar() {
                                         <BookmarkIcon className="mr-2 h-4 w-4" />
                                         <span>Saved Properties</span>
                                     </DropdownMenuItem>
-                                    <DropdownMenuItem onClick={logout}>
+                                    {
+                                        isAdmin && (
+                                            <Link to={'/admin'}>
+                                                <DropdownMenuItem className='cursor-pointer'>
+                                                    <Gauge className="mr-2 h-4 w-4" />
+                                                    <span>Dashboard</span>
+                                                </DropdownMenuItem>
+                                            </Link>
+                                        )
+                                    }
+                                    <DropdownMenuItem onClick={logout} className='cursor-pointer'>
                                         <LogOut className="mr-2 h-4 w-4" />
                                         <span>Log out</span>
                                     </DropdownMenuItem>
@@ -163,6 +174,15 @@ export default function Navbar() {
                                         <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => setIsOpen(false)}>
                                             <BookmarkIcon className="mr-2 h-4 w-4" /> Saved Properties
                                         </Button>
+                                        {
+                                            isAdmin && (
+                                                <Link to={'/admin'} onClick={() => setIsOpen(false)}>
+                                                    <Button variant="outline" className="w-full border-white hover:bg-white text-p1 mt-4" onClick={() => setIsOpen(false)}>
+                                                        <Gauge className="mr-2 h-4 w-4" /> Dashboard
+                                                    </Button>
+                                                </Link>
+                                            )
+                                        }
                                         <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => { logout(); setIsOpen(false); }}>
                                             <LogOut className="mr-2 h-4 w-4" /> Log out
                                         </Button>

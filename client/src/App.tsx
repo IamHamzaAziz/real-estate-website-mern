@@ -10,6 +10,9 @@ import Properties from './pages/Properties';
 import Blogs from './pages/Blogs';
 import VerifyOTP from './pages/VerifyOTP';
 import { UserContextProvider } from './context/UserContext';
+import AdminDashboardLayout from './layouts/AdminDashboardLayout';
+import Dashboard from './pages/admin/Dashboard';
+import AddBlog from './pages/admin/AddBlog';
 
 function App() {
   return (
@@ -25,6 +28,11 @@ function App() {
             <Route path='/properties' element={<Properties />} />
             <Route path='/blogs' element={<Blogs />} />
             <Route path='/verify-otp' element={<VerifyOTP />} />
+
+            <Route path='/admin' element={<AdminDashboardLayout />}>
+              <Route index element={<Dashboard />} />
+              <Route path='add-blog' element={<AddBlog />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -27,6 +27,8 @@ authRouter.post("/sign-up", async (req, res) => {
       checkEmail.name = name;
       checkEmail.password = bycrypt.hashSync(password, salt);
       await checkEmail.save();
+
+      await OTP.findOneAndDelete({ email: email });
     } else {
       await User.create({
         name: name,
@@ -204,7 +206,6 @@ authRouter.post("/sign-in", async (req, res) => {
       (err, token) => {
         if (err) throw err;
 
-        console.log("token is", token);
         res.status(200).cookie("token", token).json({
           _id: user._id,
           name: user.name,
@@ -221,13 +222,7 @@ authRouter.post("/sign-in", async (req, res) => {
 
 authRouter.get("/profile", async (req, res) => {
   try {
-    console.log(req.cookies);
     const { token } = req.cookies;
-    if (token) {
-      console.log("He bhai");
-    } else {
-      console.log("nhi he bhai");
-    }
 
     if (!token) {
       return res.status(401).json({ message: "No token found" });
@@ -243,7 +238,12 @@ authRouter.get("/profile", async (req, res) => {
 });
 
 authRouter.post("/logout", (req, res) => {
-  res.cookie("token", "").json("ok");
+  try {
+    res.cookie("token", "").json("ok");
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server Error" });
+  }
 });
 
 export default authRouter;

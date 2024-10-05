@@ -2,11 +2,11 @@ import { Schema, model } from "mongoose";
 
 const blogSchema = new Schema(
   {
-    name: { type: String, required: true },
+    title: { type: String, required: true },
     content: { type: String, required: true },
     summary: { type: String, required: true },
     image: { type: String, required: true },
-    slug: { type: String, required: true },
+    blogSlug: { type: String, required: true },
   },
   {
     timestamps: true,

@@ -25,7 +25,7 @@ const SignUp = () => {
 
     const navigate = useNavigate()
 
-    const failure = (message: String = 'Failed to send your message') => {
+    const failure = (message: String = 'Failed to sign up') => {
         toast.error(message, {
             position: "bottom-right",
             autoClose: 5000,

@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRoutes.js";
+import blogRouter from "./routes/blogRoutes.js";
 
 dotenv.config();
 
@@ -22,5 +23,6 @@ app.use(cookieParser());
 mongoose.connect(process.env.MONGODB_URI);
 
 app.use("/api/auth", authRouter);
+app.use("/api/blog", blogRouter);
 
 app.listen(process.env.PORT);

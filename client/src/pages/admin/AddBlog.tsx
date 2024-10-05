@@ -6,10 +6,12 @@ import { Textarea } from "@/components/ui/textarea"
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { ThreeCircles } from "react-loader-spinner"
+import axios from "axios"
+import { Bounce, toast, ToastContainer } from "react-toastify"
 
 const modules = {
     toolbar: [
-        [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'header': [1, 2, 3, false] }],
         ['bold', 'italic', 'underline', 'blockquote'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
         ['link', 'image']
@@ -30,25 +32,76 @@ const AddBlog = () => {
     const [title, setTitle] = useState("")
     const [summary, setSummary] = useState("")
     const [content, setContent] = useState("")
-    const [image, setImage] = useState<string | null>(null)
+    const [image, setImage] = useState<File | null>(null)
 
     const [loading, setLoading] = useState(false)
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (file) {
-            const reader = new FileReader()
-            reader.onloadend = () => {
-                setImage(reader.result as string)
-            }
-            reader.readAsDataURL(file)
-        }
+
+    const failure = (message: String = 'Failed to send your message') => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
+    }
+
+    const success = (message: String = 'Failed to send your message') => {
+        toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
     }
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
-        console.log({ title, summary, content, image })
+        setLoading(true)
+
+        if (!title || !summary || !content || !image) {
+            failure('All fields are required')
+            setLoading(false)
+            return
+        }
+
+        try {
+            axios.post(`${import.meta.env.VITE_SERVER_URL}/api/blog/create-blog`, { title, summary, content, image }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                },
+                withCredentials: true
+            })
+                .then(response => {
+                    if (response.status === 200) {
+                        success('Blog created successfully')
+                        setTitle("")
+                        setSummary("")
+                        setContent("")
+                        setImage(null)
+                        setLoading(false)
+                    }
+                })
+                .catch(error => {
+                    failure('Failed to create blog')
+                    setLoading(false)
+                    console.log(error)
+                })
+        } catch (error) {
+            failure('Failed to create blog')
+            setLoading(false)
+        }
     }
 
     return (
@@ -83,7 +136,7 @@ const AddBlog = () => {
                         formats={formats}
                         value={content}
                         onChange={(newValue) => setContent(newValue)}
-                        className='border border-gray-400 rounded-lg overflow-hidden'
+                        className="border border-gray-400 rounded-lg overflow-hidden"
                     />
                 </div>
 
@@ -92,7 +145,7 @@ const AddBlog = () => {
                         {
                             image && (
                                 <img
-                                    src={image}
+                                    src={URL.createObjectURL(image)}
                                     alt="Selected blog image"
                                     className="w-full h-full"
                                 />
@@ -107,7 +160,14 @@ const AddBlog = () => {
                         id="image"
                         type="file"
                         accept="image/*"
-                        onChange={handleImageUpload}
+                        onChange={(e) => {
+                            const files = e.target.files;
+                            if (files && files.length > 0) {
+                                setImage(files[0]); // Set the first file if available
+                            } else {
+                                setImage(null); // Reset the image if no file is selected
+                            }
+                        }}
                         className="hidden"
                     />
                 </div>
@@ -122,6 +182,8 @@ const AddBlog = () => {
                     }
                 </Button>
             </form>
+
+            <ToastContainer />
         </div>
     )
 }

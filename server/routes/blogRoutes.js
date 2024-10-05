@@ -1,27 +1,30 @@
 import express from "express";
-import Blog from "../models/BlogModel";
-import upload from "../middleware/multer";
-import cloudinary from "../utils/cloudinary";
-import slug from "slug";
+import Blog from "../models/BlogModel.js";
+import upload from "../middleware/multer.js";
+import cloudinary from "../utils/cloudinary.js";
+import slugify from "slugify";
 
-const authRouter = express();
+const blogRouter = express();
 
-authRouter.post("/create-blog", upload.single("image"), async (req, res) => {
+blogRouter.post("/create-blog", upload.single("image"), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No image provided" });
+    }
+
     const { title, content, summary } = req.body;
 
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: "real_estate_mern/blogs",
       width: 500,
       height: 500,
-      crop: "fill",
     });
 
-    const slug = slug(title) + "-" + Date.now();
+    const slug = slugify(title) + "-" + Date.now();
 
     await Blog.create({
       title: title,
-      slug: slug,
+      blogSlug: slug,
       content: content,
       summary: summary,
       image: result.secure_url,
@@ -33,3 +36,5 @@ authRouter.post("/create-blog", upload.single("image"), async (req, res) => {
     console.log(error);
   }
 });
+
+export default blogRouter;

@@ -24,7 +24,7 @@ const VerifyOTP = () => {
 
     const email = location.state.email
 
-    const failure = (message: String = 'Failed to send your message') => {
+    const failure = (message: String = 'Cannot verify OTP') => {
         toast.error(message, {
             position: "bottom-right",
             autoClose: 5000,

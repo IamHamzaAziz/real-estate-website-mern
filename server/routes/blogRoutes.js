@@ -20,7 +20,10 @@ blogRouter.post("/create-blog", upload.single("image"), async (req, res) => {
       height: 500,
     });
 
-    const slug = slugify(title) + "-" + Date.now();
+    const slug =
+      slugify(title, { lower: true, remove: /[*+~.()'"!:@]/g }) +
+      "-" +
+      Date.now();
 
     await Blog.create({
       title: title,
@@ -34,6 +37,24 @@ blogRouter.post("/create-blog", upload.single("image"), async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error });
     console.log(error);
+  }
+});
+
+blogRouter.get("/get-blogs", async function (req, res) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+
+    const skip = (page - 1) * limit;
+
+    res.json(
+      await Blog.find({}, { content: 0, updatedAt: 0 })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+    );
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

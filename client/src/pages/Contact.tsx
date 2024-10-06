@@ -20,6 +20,8 @@ const Contact = () => {
         console.log("Form submitted:", { name, email, message })
     }
 
+    document.title = "Contact Us - SkyEstate"
+
     return (
         <div className="min-h-screen flex flex-col">
             <main className="flex-grow flex items-stretch">

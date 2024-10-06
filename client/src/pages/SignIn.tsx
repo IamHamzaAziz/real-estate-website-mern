@@ -66,6 +66,8 @@ const SignIn = () => {
         }
     }
 
+    document.title = "Sign In - SkyEstate"
+
     return (
         <div className="flex min-h-screen">
             {/* Left side with image */}

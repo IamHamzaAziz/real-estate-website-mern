@@ -58,4 +58,33 @@ blogRouter.get("/get-blogs", async function (req, res) {
   }
 });
 
+blogRouter.get("/get-blog/:slug", async function (req, res) {
+  try {
+    res.json(
+      await Blog.findOne(
+        { blogSlug: req.params.slug },
+        { summary: 0, updatedAt: 0 }
+      )
+    );
+  } catch (error) {
+    res.status(404).json({ message: "Blog not found" });
+    console.log(error);
+  }
+});
+
+blogRouter.get("/latest-three-blogs/:slug", async function (req, res) {
+  try {
+    res.json(
+      await Blog.find(
+        { blogSlug: { $ne: req.params.slug } },
+        { content: 0, updatedAt: 0 }
+      )
+        .sort({ createdAt: -1 })
+        .limit(3)
+    );
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export default blogRouter;

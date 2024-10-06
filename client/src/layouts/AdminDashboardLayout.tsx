@@ -10,11 +10,13 @@ const AdminDashboardLayout = () => {
         { icon: Home, label: "Dashboard", href: "/admin" },
         { icon: PlusCircle, label: "Add Blog", href: "/admin/add-blog" },
         { icon: List, label: "Manage Blogs", href: "/admin/manage-blogs" },
-        { icon: Building, label: "Add Property", href: "/admin/add-property" },
-        { icon: Building, label: "Show All Properties", href: "/admin/properties" },
+        { icon: PlusCircle, label: "Add Property", href: "/admin/add-property" },
+        { icon: Building, label: "Manage Properties", href: "/admin/properties" },
         { icon: MessageSquare, label: "Contact Messages", href: "/admin/messages" },
         { icon: Users, label: "Manage Users", href: "/admin/users" },
     ]
+
+    document.title = "Admin Panel"
 
     return (
         <div className="flex h-screen bg-gray-100">
@@ -34,7 +36,7 @@ const AdminDashboardLayout = () => {
                     </Button>
                 </div>
                 <nav className="mt-8">
-                    <ul>
+                    <ul className="list-none">
                         {menuItems.map((item, index) => (
                             <li key={index}>
                                 <Link

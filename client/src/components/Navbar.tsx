@@ -21,7 +21,6 @@ export default function Navbar() {
         const checkLogin = async () => {
             await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/profile`, { withCredentials: true })
                 .then((response) => {
-                    console.log(response);
                     setUserInfo(response.data)
                 })
                 .catch((error) => console.log(error))

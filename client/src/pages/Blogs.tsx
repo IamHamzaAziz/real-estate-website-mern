@@ -41,6 +41,7 @@ const Blogs = () => {
         fetchBlogs()
     }
 
+    document.title = "Blogs - SkyEstate"
 
     return (
         <div className="container mx-auto px-4 py-8">

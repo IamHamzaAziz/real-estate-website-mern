@@ -73,6 +73,8 @@ const VerifyOTP = () => {
         return <Navigate to={'/'} />
     }
 
+    document.title = "Verify OTP - SkyEstate"
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
             <Card className="max-w-md w-full shadow-lg">

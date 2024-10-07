@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CalendarIcon, HomeIcon, MapPinIcon } from "lucide-react"
 
 // Sample data
-const cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"]
+const cities = ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Peshawar", "Quetta"]
 const propertyTypes = ["Apartment", "House", "Villa"]
 
 const sampleProperties = [

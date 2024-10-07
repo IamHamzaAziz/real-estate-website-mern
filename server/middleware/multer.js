@@ -7,4 +7,9 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+export const uploadPropertyPhotos = upload.fields([
+  { name: "thumbnail", maxCount: 1 },
+  { name: "propertyPhotos", maxCount: 10 },
+]);
+
 export default upload;

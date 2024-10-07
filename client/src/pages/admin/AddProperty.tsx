@@ -9,6 +9,7 @@ import 'react-quill/dist/quill.snow.css'
 import { ThreeCircles } from "react-loader-spinner"
 import axios from "axios"
 import { Bounce, toast, ToastContainer } from "react-toastify"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const modules = {
     toolbar: [
@@ -29,6 +30,9 @@ const formats = [
     'link'
 ]
 
+const propertyTypes = ["Apartment", "House", "Villa"]
+const cities = ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Peshawar", "Quetta"]
+
 const AddProperty = () => {
     const [title, setTitle] = useState("");
     const [price, setPrice] = useState("");
@@ -38,6 +42,7 @@ const AddProperty = () => {
     const [description, setDescription] = useState("");
     const [whatsapp, setWhatsapp] = useState("");
     const [email, setEmail] = useState("");
+    const [type, setType] = useState("");
 
     const [loading, setLoading] = useState(false)
 
@@ -96,8 +101,58 @@ const AddProperty = () => {
         e.preventDefault()
 
         setLoading(true)
-    }
 
+        if (!title || !price || !area || !city || !location || !type || !description || !whatsapp || !email || !thumbnail || propertyPhotos.length === 0) {
+            failure('All fields are required')
+            setLoading(false)
+            return
+        }
+
+        const formData = new FormData();
+
+        formData.append("title", title);
+        formData.append("price", price);
+        formData.append("area", area);
+        formData.append("location", location);
+        formData.append("city", city);
+        formData.append("description", description);
+        formData.append("whatsapp", whatsapp);
+        formData.append("email", email);
+        formData.append("type", type);
+
+        if (thumbnail) {
+            formData.append("thumbnail", thumbnail);
+        }
+
+        propertyPhotos.forEach((photo, index) => {
+            formData.append("propertyPhotos", photo);
+        });
+
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/property/create-property`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            },
+            withCredentials: true
+        })
+            .then(response => {
+                if (response.status === 200) {
+                    success('Property created successfully')
+                    setTitle("")
+                    setPrice("")
+                    setArea("")
+                    setLocation("")
+                    setDescription("")
+                    setThumbnail(null)
+                    setPropertyPhotos([])
+                    setLoading(false)
+                }
+            })
+            .catch(error => {
+                failure('Failed to create property')
+                setLoading(false)
+                console.log(error)
+            })
+    }
 
     return (
         <div className="container mx-auto p-4">
@@ -108,22 +163,55 @@ const AddProperty = () => {
                         <Label htmlFor="title">Title</Label>
                         <Input id="title" className="border border-gray-400" value={title} onChange={e => setTitle(e.target.value)} required />
                     </div>
+
+
                     <div>
                         <Label htmlFor="price">Price</Label>
                         <Input id="price" className="border border-gray-400" type="number" value={price} onChange={e => setPrice(e.target.value)} required />
                     </div>
+
                     <div>
                         <Label htmlFor="area">Area (sqm)</Label>
                         <Input id="area" className="border border-gray-400" type="number" value={area} onChange={e => setArea(e.target.value)} required />
                     </div>
+
                     <div>
                         <Label htmlFor="city">City</Label>
-                        <Input id="city" className="border border-gray-400" value={city} onChange={e => setCity(e.target.value)} required />
+                        <Select onValueChange={(value) => setCity(value)}>
+                            <SelectTrigger id="city" className="border border-gray-400">
+                                <SelectValue placeholder="Select city" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {cities.map((city) => (
+                                    <SelectItem key={city} value={city}>
+                                        {city}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
                     </div>
+
                     <div className="md:col-span-2">
                         <Label htmlFor="location">Complete Location</Label>
                         <Input id="location" className="border border-gray-400" value={location} onChange={e => setLocation(e.target.value)} required />
                     </div>
+
+                    <div className="md:col-span-2">
+                        <Label htmlFor="propertyType">Property Type</Label>
+                        <Select onValueChange={(value) => setType(value)}>
+                            <SelectTrigger id="propertyType" className="border border-gray-400">
+                                <SelectValue placeholder="Select property type" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {propertyTypes.map((type) => (
+                                    <SelectItem key={type} value={type}>
+                                        {type}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+
                     <div className="md:col-span-2">
                         <Label htmlFor="description">Description</Label>
                         <ReactQuill
@@ -134,15 +222,19 @@ const AddProperty = () => {
                             className="border border-gray-400 rounded-lg overflow-hidden"
                         />
                     </div>
+
                     <div>
                         <Label htmlFor="whatsapp">WhatsApp Number</Label>
                         <Input id="whatsapp" className="border border-gray-400" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} required />
                     </div>
+
                     <div>
                         <Label htmlFor="email">Email</Label>
                         <Input id="email" className="border border-gray-400" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
                     </div>
                 </div>
+
+
 
                 <div>
                     <Label htmlFor="thumbnail">Thumbnail Photo</Label>
@@ -212,6 +304,8 @@ const AddProperty = () => {
                     }
                 </Button>
             </form>
+
+            <ToastContainer />
         </div>
     )
 }

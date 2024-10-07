@@ -37,7 +37,7 @@ const AddBlog = () => {
     const [loading, setLoading] = useState(false)
 
 
-    const failure = (message: String = 'Failed to send your message') => {
+    const failure = (message: String) => {
         toast.error(message, {
             position: "bottom-right",
             autoClose: 5000,
@@ -51,7 +51,7 @@ const AddBlog = () => {
         })
     }
 
-    const success = (message: String = 'Failed to send your message') => {
+    const success = (message: String) => {
         toast.success(message, {
             position: "bottom-right",
             autoClose: 5000,

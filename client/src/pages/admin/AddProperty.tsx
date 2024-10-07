@@ -1,17 +1,21 @@
 import { useState, ChangeEvent } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { X } from "lucide-react"
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
+import { ThreeCircles } from "react-loader-spinner"
+import axios from "axios"
+import { Bounce, toast, ToastContainer } from "react-toastify"
 
 const modules = {
     toolbar: [
         [{ 'header': [1, 2, 3, false] }],
         ['bold', 'italic', 'underline', 'blockquote'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-        ['link', 'image']
+        ['link']
     ],
     clipboard: {
         matchVisual: false
@@ -22,27 +26,23 @@ const formats = [
     'header',
     'bold', 'italic', 'underline', 'blockquote',
     'list', 'bullet',
-    'link', 'image'
+    'link'
 ]
 
 const AddProperty = () => {
-    const [formData, setFormData] = useState({
-        title: "",
-        price: "",
-        area: "",
-        location: "",
-        city: "",
-        description: "",
-        whatsapp: "",
-        email: "",
-    })
+    const [title, setTitle] = useState("");
+    const [price, setPrice] = useState("");
+    const [area, setArea] = useState("");
+    const [location, setLocation] = useState("");
+    const [city, setCity] = useState("");
+    const [description, setDescription] = useState("");
+    const [whatsapp, setWhatsapp] = useState("");
+    const [email, setEmail] = useState("");
+
+    const [loading, setLoading] = useState(false)
+
     const [thumbnail, setThumbnail] = useState<File | null>(null)
     const [propertyPhotos, setPropertyPhotos] = useState<File[]>([])
-
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setFormData((prev) => ({ ...prev, [name]: value }))
-    }
 
     const handleThumbnailChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -64,10 +64,38 @@ const AddProperty = () => {
         setPropertyPhotos((prev) => prev.filter((_, i) => i !== index))
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const failure = (message: String) => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
+    }
+
+    const success = (message: String) => {
+        toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
+    }
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        // Implement your form submission logic here
-        console.log("Form submitted:", { ...formData, thumbnail, propertyPhotos })
+
+        setLoading(true)
     }
 
 
@@ -78,41 +106,41 @@ const AddProperty = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <Label htmlFor="title">Title</Label>
-                        <Input id="title" name="title" value={formData.title} onChange={handleInputChange} required />
+                        <Input id="title" className="border border-gray-400" value={title} onChange={e => setTitle(e.target.value)} required />
                     </div>
                     <div>
                         <Label htmlFor="price">Price</Label>
-                        <Input id="price" name="price" type="number" value={formData.price} onChange={handleInputChange} required />
+                        <Input id="price" className="border border-gray-400" type="number" value={price} onChange={e => setPrice(e.target.value)} required />
                     </div>
                     <div>
                         <Label htmlFor="area">Area (sqm)</Label>
-                        <Input id="area" name="area" type="number" value={formData.area} onChange={handleInputChange} required />
+                        <Input id="area" className="border border-gray-400" type="number" value={area} onChange={e => setArea(e.target.value)} required />
                     </div>
                     <div>
                         <Label htmlFor="city">City</Label>
-                        <Input id="city" name="city" value={formData.city} onChange={handleInputChange} required />
+                        <Input id="city" className="border border-gray-400" value={city} onChange={e => setCity(e.target.value)} required />
                     </div>
                     <div className="md:col-span-2">
                         <Label htmlFor="location">Complete Location</Label>
-                        <Input id="location" name="location" value={formData.location} onChange={handleInputChange} required />
+                        <Input id="location" className="border border-gray-400" value={location} onChange={e => setLocation(e.target.value)} required />
                     </div>
                     <div className="md:col-span-2">
                         <Label htmlFor="description">Description</Label>
-                        <Textarea
-                            id="description"
-                            name="description"
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            required
+                        <ReactQuill
+                            modules={modules}
+                            formats={formats}
+                            value={description}
+                            onChange={(newValue) => setDescription(newValue)}
+                            className="border border-gray-400 rounded-lg overflow-hidden"
                         />
                     </div>
                     <div>
                         <Label htmlFor="whatsapp">WhatsApp Number</Label>
-                        <Input id="whatsapp" name="whatsapp" value={formData.whatsapp} onChange={handleInputChange} required />
+                        <Input id="whatsapp" className="border border-gray-400" value={whatsapp} onChange={e => setWhatsapp(e.target.value)} required />
                     </div>
                     <div>
                         <Label htmlFor="email">Email</Label>
-                        <Input id="email" name="email" type="email" value={formData.email} onChange={handleInputChange} required />
+                        <Input id="email" className="border border-gray-400" type="email" value={email} onChange={e => setEmail(e.target.value)} required />
                     </div>
                 </div>
 
@@ -174,7 +202,15 @@ const AddProperty = () => {
                     )}
                 </div>
 
-                <Button type="submit" className="w-full">Add Property</Button>
+                <Button type={loading ? "button" : "submit"} className="w-full bg-p1 hover:bg-p2">
+                    {
+                        loading ? (
+                            <ThreeCircles height={15} color="white" />
+                        ) : (
+                            "Add Property"
+                        )
+                    }
+                </Button>
             </form>
         </div>
     )

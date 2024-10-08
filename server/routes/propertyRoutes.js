@@ -79,27 +79,63 @@ propertyRouter.post(
 
 propertyRouter.get("/all-properties", async (req, res) => {
   try {
+    // const page = parseInt(req.query.page) || 1;
+    // const limit = parseInt(req.query.limit) || 6;
+
+    // const skip = (page - 1) * limit;
+
+    // res.json(
+    //   await Property.find(
+    //     {},
+    //     {
+    //       propertyPhotos: 0,
+    //       updatedAt: 0,
+    //       description: 0,
+    //       whatsapp: 0,
+    //       email: 0,
+    //     }
+    //   )
+    //     .sort({ createdAt: -1 })
+    //     .skip(skip)
+    //     .limit(limit)
+    // );
+
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
 
     const skip = (page - 1) * limit;
 
-    res.json(
-      await Property.find(
-        {},
-        {
-          propertyPhotos: 0,
-          updatedAt: 0,
-          description: 0,
-          whatsapp: 0,
-          email: 0,
-        }
-      )
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit)
-    );
-  } catch (error) {}
+    // Fetch the city and type query parameters
+    const { city, type } = req.query;
+
+    // Build the query object
+    const query = {};
+    if (city) {
+      query.city = city;
+    }
+    if (type) {
+      query.type = type;
+    }
+
+    const properties = await Property.find(
+      query, // Use the constructed query object for filtering
+      {
+        propertyPhotos: 0,
+        updatedAt: 0,
+        description: 0,
+        whatsapp: 0,
+        email: 0,
+      }
+    )
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    res.json(properties);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log(error);
+  }
 });
 
 export default propertyRouter;

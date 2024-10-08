@@ -7,6 +7,7 @@ import { CalendarIcon, HomeIcon, MapPinIcon } from "lucide-react"
 import InfiniteScroll from 'react-infinite-scroll-component';
 import ContentLoader from "@/components/ContentLoader";
 import axios from "axios"
+import { ThreeCircles } from "react-loader-spinner"
 
 // Sample data
 const cities = ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Peshawar", "Quetta"]
@@ -32,22 +33,60 @@ export default function Properties() {
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
 
-    const [loading, setLoading] = useState(false)
+    const [addFiltersLoading, setAddFiltersLoading] = useState(false)
+    const [removeFiltersLoading, setRemoveFiltersLoading] = useState(false)
+
+    const [city, setCity] = useState('')
+    const [type, setType] = useState('')
 
     useEffect(() => {
         fetchProperties()
     }, [])
 
-    const fetchProperties = async () => {
-        axios.get(`${import.meta.env.VITE_SERVER_URL}/api/property/all-properties?page=${page}&limit=6`)
+    const fetchProperties = async (reset: boolean = false) => {
+        if (reset) {
+            setPage(1)  // Reset the page to 1
+            setProperties([])  // Clear the current properties list
+            setHasMore(true)  // Reset hasMore to true to allow infinite scrolling
+        }
+
+        await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/property/all-properties`, {
+            params: {
+                page: reset ? 1 : page,  // Reset the page if fetching with new filters
+                limit: 6,
+                city: city || undefined,
+                type: type || undefined,
+            },
+        })
             .then(response => {
                 if (response.status === 200) {
-                    setProperties([...properties, ...response.data])
-                    setHasMore(response.data.length > 0)
-                    setPage(page + 1)
+                    if (reset) {
+                        setProperties(response.data)
+                    } else {
+                        setProperties([...properties, ...response.data])
+                    }
+                    setHasMore(response.data.length > 0);
+                    setPage(page + 1);
                 }
             })
+            .catch(error => console.log(error))
     }
+
+    const applyFilters = () => {
+        setAddFiltersLoading(true)
+        setPage(1);  // Reset the page to 1 when applying filters
+        fetchProperties(true);  // Fetch with filters and reset data
+        setAddFiltersLoading(false)
+    };
+
+    const removeFilters = () => {
+        setRemoveFiltersLoading(true)
+        setCity('');
+        setType('');
+        setPage(1);
+        fetchProperties(true);  // Reset properties to the unfiltered list
+        setRemoveFiltersLoading(false)
+    };
 
     const fetchMoreProperties = () => {
         fetchProperties()
@@ -57,12 +96,12 @@ export default function Properties() {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-8">Real Estate Properties</h1>
+            <h1 className="text-3xl font-bold mb-8">SkyEstate Properties</h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div>
                     <Label htmlFor="city">City</Label>
-                    <Select>
+                    <Select onValueChange={(value) => setCity(value)} value={city}>
                         <SelectTrigger id="city">
                             <SelectValue placeholder="Select city" />
                         </SelectTrigger>
@@ -78,7 +117,7 @@ export default function Properties() {
 
                 <div>
                     <Label htmlFor="propertyType">Property Type</Label>
-                    <Select>
+                    <Select onValueChange={(value) => setType(value)} value={type}>
                         <SelectTrigger id="propertyType">
                             <SelectValue placeholder="Select property type" />
                         </SelectTrigger>
@@ -93,9 +132,34 @@ export default function Properties() {
                 </div>
             </div>
 
-            <Button className="mb-8 bg-p1 hover:bg-p2">
-                Apply Filters
-            </Button>
+            {
+                addFiltersLoading ? (
+                    <Button className="mb-8 bg-p1 hover:bg-p2">
+                        <ThreeCircles color="white" height={15} />
+                    </Button>
+
+                ) : (
+                    <Button className="mb-8 bg-p1 hover:bg-p2" onClick={applyFilters}>
+                        Apply Filters
+                    </Button>
+
+                )
+            }
+
+            {
+                removeFiltersLoading ? (
+                    <Button className="mb-8 ml-2 bg-p1 hover:bg-p2">
+                        <ThreeCircles color="white" height={15} />
+                    </Button>
+
+                ) : (
+                    <Button className="mb-8 ml-2 bg-p1 hover:bg-p2" onClick={removeFilters}>
+                        Remove Filters
+                    </Button>
+
+                )
+            }
+
 
             <InfiniteScroll
                 dataLength={properties.length}

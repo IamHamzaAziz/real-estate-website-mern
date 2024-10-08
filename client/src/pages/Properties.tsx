@@ -1,143 +1,56 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { CalendarIcon, HomeIcon, MapPinIcon } from "lucide-react"
+import InfiniteScroll from 'react-infinite-scroll-component';
+import ContentLoader from "@/components/ContentLoader";
+import axios from "axios"
 
 // Sample data
 const cities = ["Karachi", "Lahore", "Islamabad", "Rawalpindi", "Peshawar", "Quetta"]
 const propertyTypes = ["Apartment", "House", "Villa"]
 
-const sampleProperties = [
-    {
-        id: 1,
-        city: "New York",
-        area: 25,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "Apartment",
-        dealerName: "John Doe",
-        price: 500000,
-        location: "Manhattan",
-        datePosted: "2023-05-15",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-    {
-        id: 2,
-        city: "Los Angeles",
-        area: 35,
-        photo: "https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        propertyType: "House",
-        dealerName: "Jane Smith",
-        price: 750000,
-        location: "Beverly Hills",
-        datePosted: "2023-05-10",
-    },
-]
+
+interface Property {
+    _id: string,
+    title: string,
+    slug: string,
+    price: number,
+    area: number,
+    location: string,
+    city: string,
+    type: string,
+    createdAt: Date,
+    thumbnail: string,
+}
 
 export default function Properties() {
-    const [filters, setFilters] = useState({
-        city: "",
-        propertyType: "",
-        area: "",
-        dealer: "",
-        price: "",
-    })
+    const [properties, setProperties] = useState<Property[]>([])
 
-    const handleFilterChange = (key: string, value: string) => {
-        setFilters((prev) => ({ ...prev, [key]: value }))
+    const [page, setPage] = useState(1)
+    const [hasMore, setHasMore] = useState(true)
+
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        fetchProperties()
+    }, [])
+
+    const fetchProperties = async () => {
+        axios.get(`${import.meta.env.VITE_SERVER_URL}/api/property/all-properties?page=${page}&limit=6`)
+            .then(response => {
+                if (response.status === 200) {
+                    setProperties([...properties, ...response.data])
+                    setHasMore(response.data.length > 0)
+                    setPage(page + 1)
+                }
+            })
     }
 
-    const handleFilterSubmit = () => {
-        // Here you would typically send a request to your backend with the filters
-        console.log("Filtering with:", filters)
+    const fetchMoreProperties = () => {
+        fetchProperties()
     }
 
     document.title = "Properties - SkyEstate"
@@ -149,7 +62,7 @@ export default function Properties() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                 <div>
                     <Label htmlFor="city">City</Label>
-                    <Select onValueChange={(value) => handleFilterChange("city", value)}>
+                    <Select>
                         <SelectTrigger id="city">
                             <SelectValue placeholder="Select city" />
                         </SelectTrigger>
@@ -165,7 +78,7 @@ export default function Properties() {
 
                 <div>
                     <Label htmlFor="propertyType">Property Type</Label>
-                    <Select onValueChange={(value) => handleFilterChange("propertyType", value)}>
+                    <Select>
                         <SelectTrigger id="propertyType">
                             <SelectValue placeholder="Select property type" />
                         </SelectTrigger>
@@ -180,49 +93,56 @@ export default function Properties() {
                 </div>
             </div>
 
-            <Button onClick={handleFilterSubmit} className="mb-8 bg-p1 hover:bg-p2">
+            <Button className="mb-8 bg-p1 hover:bg-p2">
                 Apply Filters
             </Button>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {sampleProperties.map((property) => (
-                    <Card key={property.id}>
-                        <CardHeader>
-                            <CardTitle>{property.propertyType} in {property.city}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <img
-                                src={property.photo}
-                                alt={`${property.propertyType} in ${property.city}`}
-                                className="w-full h-48 object-cover mb-4 rounded-md"
-                            />
-                            <div className="space-y-2">
-                                <div className="flex items-center">
-                                    <HomeIcon className="w-5 h-5 mr-2" />
-                                    <span>{property.area} sq. meters</span>
+            <InfiniteScroll
+                dataLength={properties.length}
+                next={fetchMoreProperties}
+                hasMore={hasMore}
+                loader={<ContentLoader />}
+            >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {properties.map((property) => (
+                        <Card key={property._id}>
+                            <CardHeader>
+                                <CardTitle>{property.type} in {property.city}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <img
+                                    src={property.thumbnail}
+                                    alt={`${property.type} in ${property.city}`}
+                                    className="w-full h-48 object-cover mb-4 rounded-md"
+                                />
+                                <div className="space-y-2">
+                                    <div className="flex items-center">
+                                        <HomeIcon className="w-5 h-5 mr-2" />
+                                        <span>{property.area} sq. meters</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <MapPinIcon className="w-5 h-5 mr-2" />
+                                        <span>{property.location}</span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <CalendarIcon className="w-5 h-5 mr-2" />
+                                        <span>Posted on {new Date(property.createdAt).toLocaleDateString()}</span>
+                                    </div>
+                                    <div>
+                                        <strong>Price:</strong> {property.price.toLocaleString()} PKR
+                                    </div>
+                                    {/* <div>
+                                        <strong>Dealer:</strong> {property.dealerName}
+                                    </div> */}
                                 </div>
-                                <div className="flex items-center">
-                                    <MapPinIcon className="w-5 h-5 mr-2" />
-                                    <span>{property.location}</span>
-                                </div>
-                                <div className="flex items-center">
-                                    <CalendarIcon className="w-5 h-5 mr-2" />
-                                    <span>Posted on {property.datePosted}</span>
-                                </div>
-                                <div>
-                                    <strong>Price:</strong> ${property.price.toLocaleString()}
-                                </div>
-                                <div>
-                                    <strong>Dealer:</strong> {property.dealerName}
-                                </div>
-                            </div>
-                        </CardContent>
-                        <CardFooter>
-                            <Button className="w-full bg-p1 hover:bg-p2">View Details</Button>
-                        </CardFooter>
-                    </Card>
-                ))}
-            </div>
+                            </CardContent>
+                            <CardFooter>
+                                <Button className="w-full bg-p1 hover:bg-p2">View Details</Button>
+                            </CardFooter>
+                        </Card>
+                    ))}
+                </div>
+            </InfiniteScroll>
         </div>
     )
 }

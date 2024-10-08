@@ -77,4 +77,29 @@ propertyRouter.post(
   }
 );
 
+propertyRouter.get("/all-properties", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 6;
+
+    const skip = (page - 1) * limit;
+
+    res.json(
+      await Property.find(
+        {},
+        {
+          propertyPhotos: 0,
+          updatedAt: 0,
+          description: 0,
+          whatsapp: 0,
+          email: 0,
+        }
+      )
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+    );
+  } catch (error) {}
+});
+
 export default propertyRouter;

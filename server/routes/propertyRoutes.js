@@ -79,27 +79,6 @@ propertyRouter.post(
 
 propertyRouter.get("/all-properties", async (req, res) => {
   try {
-    // const page = parseInt(req.query.page) || 1;
-    // const limit = parseInt(req.query.limit) || 6;
-
-    // const skip = (page - 1) * limit;
-
-    // res.json(
-    //   await Property.find(
-    //     {},
-    //     {
-    //       propertyPhotos: 0,
-    //       updatedAt: 0,
-    //       description: 0,
-    //       whatsapp: 0,
-    //       email: 0,
-    //     }
-    //   )
-    //     .sort({ createdAt: -1 })
-    //     .skip(skip)
-    //     .limit(limit)
-    // );
-
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 6;
 
@@ -110,10 +89,10 @@ propertyRouter.get("/all-properties", async (req, res) => {
 
     // Build the query object
     const query = {};
-    if (city) {
+    if (city && city.trim()) {
       query.city = city;
     }
-    if (type) {
+    if (type && type.trim()) {
       query.type = type;
     }
 
@@ -134,6 +113,17 @@ propertyRouter.get("/all-properties", async (req, res) => {
     res.json(properties);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    console.log(error);
+  }
+});
+
+propertyRouter.get("/get-property/:slug", async (req, res) => {
+  try {
+    res.json(
+      await Property.findOne({ slug: req.params.slug }, { updatedAt: 0 })
+    );
+  } catch (error) {
+    res.status(404).json({ message: "Blog not found" });
     console.log(error);
   }
 });

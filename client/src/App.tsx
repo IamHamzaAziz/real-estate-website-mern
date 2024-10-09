@@ -15,6 +15,7 @@ import Dashboard from './pages/admin/Dashboard';
 import AddBlog from './pages/admin/AddBlog';
 import AddProperty from './pages/admin/AddProperty';
 import BlogDetails from './pages/BlogDetails';
+import PropertyDetails from './pages/PropertyDetails';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path='/blogs' element={<Blogs />} />
             <Route path='/verify-otp' element={<VerifyOTP />} />
             <Route path='/blog/:slug' element={<BlogDetails />} />
+            <Route path='/property/:slug' element={<PropertyDetails />} />
 
             <Route path='/admin' element={<AdminDashboardLayout />}>
               <Route index element={<Dashboard />} />

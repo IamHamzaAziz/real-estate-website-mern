@@ -77,4 +77,32 @@ contactRouter.post("/", async (req, res) => {
   }
 });
 
+contactRouter.get("/", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 8;
+
+    const skip = (page - 1) * limit;
+
+    const contactMessages = await ContactMessage.find({}, { updatedAt: 0 })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+    res.json(contactMessages);
+  } catch (error) {
+    res.status(500).json("Server Error");
+    console.error(error);
+  }
+});
+
+contactRouter.delete("/:id", async (req, res) => {
+  try {
+    await ContactMessage.findByIdAndDelete(req.params.id);
+    res.status(200).json("Contact message deleted successfully");
+  } catch (error) {
+    res.status(500).json("Server Error");
+    console.error(error);
+  }
+});
+
 export default contactRouter;

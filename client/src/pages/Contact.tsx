@@ -76,10 +76,10 @@ const Contact = () => {
             .then(response => {
                 if (response.status === 200) {
                     success('Message sent successfully')
+                    setLoading(false)
                     setName("")
                     setEmail("")
                     setMessage("")
-                    setLoading(false)
                 }
             })
             .catch(error => {

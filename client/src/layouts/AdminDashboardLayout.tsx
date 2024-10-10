@@ -12,7 +12,7 @@ const AdminDashboardLayout = () => {
         { icon: List, label: "Manage Blogs", href: "/admin/manage-blogs" },
         { icon: PlusCircle, label: "Add Property", href: "/admin/add-property" },
         { icon: Building, label: "Manage Properties", href: "/admin/properties" },
-        { icon: MessageSquare, label: "Contact Messages", href: "/admin/messages" },
+        { icon: MessageSquare, label: "Contact Messages", href: "/admin/contact-messages" },
         { icon: Users, label: "Manage Users", href: "/admin/users" },
     ]
 

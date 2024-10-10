@@ -16,6 +16,7 @@ import AddBlog from './pages/admin/AddBlog';
 import AddProperty from './pages/admin/AddProperty';
 import BlogDetails from './pages/BlogDetails';
 import PropertyDetails from './pages/PropertyDetails';
+import ContactMessages from './pages/admin/ContactMessages';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
               <Route index element={<Dashboard />} />
               <Route path='add-blog' element={<AddBlog />} />
               <Route path='add-property' element={<AddProperty />} />
+              <Route path='contact-messages' element={<ContactMessages />} />
             </Route>
           </Route>
         </Routes>

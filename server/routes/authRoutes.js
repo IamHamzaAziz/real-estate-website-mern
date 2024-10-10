@@ -62,7 +62,21 @@ authRouter.post("/sign-up", async (req, res) => {
       },
       to: email,
       subject: "Verify OTP",
-      text: `Your OTP is ${otp}\nIt will expire and would be invalid after 10 minutes.`,
+      html: `
+        <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+          <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <h2 style="color: #0d47a1; text-align: center;">Verify Your OTP</h2>
+            <p style="font-size: 16px; color: #555;">Dear User,</p>
+            <p style="font-size: 16px; color: #555;">
+              Your OTP is <strong style="color: #0d47a1; font-size: 18px;">${otp}</strong>
+            </p>
+            <p style="font-size: 16px; color: #555;">
+              Please use this OTP to complete your verification. It will expire and become invalid after <strong>10 minutes</strong>.
+            </p>
+            <p style="font-size: 14px; color: #aaa; text-align: center; margin-top: 30px;">Thank you for using StyEstate. If you have any questions, feel free to contact us.</p>
+          </div>
+        </div>
+      `,
     };
 
     await new Promise((resolve, reject) => {
@@ -166,7 +180,21 @@ authRouter.post("/sign-in", async (req, res) => {
         },
         to: email,
         subject: "Verify OTP",
-        text: `Your OTP is ${otp}\nIt will expire and would be invalid after 10 minutes.`,
+        html: `
+          <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+            <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+              <h2 style="color: #0d47a1; text-align: center;">Verify Your OTP</h2>
+              <p style="font-size: 16px; color: #555;">Dear User,</p>
+              <p style="font-size: 16px; color: #555;">
+                Your OTP is <strong style="color: #0d47a1; font-size: 18px;">${otp}</strong>
+              </p>
+              <p style="font-size: 16px; color: #555;">
+                Please use this OTP to complete your verification. It will expire and become invalid after <strong>10 minutes</strong>.
+              </p>
+              <p style="font-size: 14px; color: #aaa; text-align: center; margin-top: 30px;">Thank you for using StyEstate. If you have any questions, feel free to contact us.</p>
+            </div>
+          </div>
+        `,
       };
 
       await new Promise((resolve, reject) => {

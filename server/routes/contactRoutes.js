@@ -43,9 +43,9 @@ contactRouter.post("/", async (req, res) => {
       html: `
         <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
             <div style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
-              <p style="font-size: 16px; color: #555;">Dear ${name}</p>
+              <p style="font-size: 16px; color: #555; text-align: center">Dear ${name}</p>
               <p style="font-size: 16px; color: #555;">
-                Your message has been received by the StyEstate team. We will review it and get back to you shortly. In the meantime, if you have any questions, feel free to reply to this email.
+                Your message has been received by the StyEstate team. We will review it and get back to you shortly.
               </p>
               <p style="font-size: 14px; color: #aaa; text-align: center; margin-top: 20px;">Thank you for using StyEstate.</p>
             </div>

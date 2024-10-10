@@ -7,6 +7,7 @@ import authRouter from "./routes/authRoutes.js";
 import blogRouter from "./routes/blogRoutes.js";
 import propertyRouter from "./routes/propertyRoutes.js";
 import contactRouter from "./routes/contactRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 
 dotenv.config();
 
@@ -28,5 +29,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/blog", blogRouter);
 app.use("/api/property", propertyRouter);
 app.use("/api/contact", contactRouter);
+app.use("/api/admin", adminRouter);
 
 app.listen(process.env.PORT);

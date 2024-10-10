@@ -17,6 +17,7 @@ import AddProperty from './pages/admin/AddProperty';
 import BlogDetails from './pages/BlogDetails';
 import PropertyDetails from './pages/PropertyDetails';
 import ContactMessages from './pages/admin/ContactMessages';
+import ManageBlogs from './pages/admin/ManageBlogs';
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
               <Route path='add-blog' element={<AddBlog />} />
               <Route path='add-property' element={<AddProperty />} />
               <Route path='contact-messages' element={<ContactMessages />} />
+              <Route path='manage-blogs' element={<ManageBlogs />} />
             </Route>
           </Route>
         </Routes>

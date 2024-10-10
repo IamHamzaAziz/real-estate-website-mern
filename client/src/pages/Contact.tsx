@@ -8,16 +8,69 @@ import { FaWhatsapp } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa6";
 import { FaLinkedinIn } from "react-icons/fa";
+import { ThreeCircles } from 'react-loader-spinner'
+import axios from 'axios'
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Contact = () => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [message, setMessage] = useState("")
 
+    const [loading, setLoading] = useState(false)
+
+    const failure = (message: String) => {
+        toast.error(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
+    }
+
+    const success = (message: String = 'Failed to sign up') => {
+        toast.success(message, {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Bounce,
+        })
+    }
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
-        // Handle form submission logic here
-        console.log("Form submitted:", { name, email, message })
+
+        setLoading(true)
+
+        if (!name || !email || !message) {
+            failure('All fields are required')
+            return
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(email)) {
+            failure('Invalid email address')
+            return
+        }
+
+        const formData = new FormData
+
+        formData.append("name", name)
+        formData.append("email", email)
+        formData.append("message", message)
+
+
     }
 
     document.title = "Contact Us - SkyEstate"
@@ -68,8 +121,15 @@ const Contact = () => {
                                     rows={4}
                                 />
                             </div>
-                            <Button type="submit" className="w-full bg-p1 hover:bg-p2">
-                                Send Message
+
+                            <Button type={loading ? "button" : "submit"} className="w-full bg-p1 hover:bg-p2">
+                                {
+                                    loading ? (
+                                        <ThreeCircles height={15} color="white" />
+                                    ) : (
+                                        "Send Message"
+                                    )
+                                }
                             </Button>
                         </form>
                         <div className="pt-4">
@@ -112,6 +172,8 @@ const Contact = () => {
                     </div>
                 </div>
             </main>
+
+            <ToastContainer />
         </div>
     )
 }

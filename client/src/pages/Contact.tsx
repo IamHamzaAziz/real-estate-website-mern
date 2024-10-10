@@ -48,29 +48,45 @@ const Contact = () => {
         })
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
         setLoading(true)
 
         if (!name || !email || !message) {
             failure('All fields are required')
+            setLoading(false)
             return
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
         if (!emailRegex.test(email)) {
             failure('Invalid email address')
+            setLoading(false)
             return
         }
 
-        const formData = new FormData
+        const formData = new FormData()
 
         formData.append("name", name)
         formData.append("email", email)
         formData.append("message", message)
 
-
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/contact`, { name: name, email: email, message: message })
+            .then(response => {
+                if (response.status === 200) {
+                    success('Message sent successfully')
+                    setName("")
+                    setEmail("")
+                    setMessage("")
+                    setLoading(false)
+                }
+            })
+            .catch(error => {
+                failure('Failed to send message')
+                setLoading(false)
+                console.error(error)
+            })
     }
 
     document.title = "Contact Us - SkyEstate"

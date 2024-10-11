@@ -27,7 +27,7 @@ interface Property {
     thumbnail: string,
 }
 
-export default function Properties() {
+const ManageProperties = () => {
     const [properties, setProperties] = useState<Property[]>([])
 
     const [page, setPage] = useState(1)
@@ -196,3 +196,5 @@ export default function Properties() {
         </div>
     )
 }
+
+export default ManageProperties

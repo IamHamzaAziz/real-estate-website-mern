@@ -128,4 +128,77 @@ propertyRouter.get("/get-property/:slug", async (req, res) => {
   }
 });
 
+propertyRouter.put(
+  "/update-property/:slug",
+  uploadPropertyPhotos,
+  async (req, res) => {
+    try {
+      const {
+        title,
+        price,
+        area,
+        location,
+        city,
+        description,
+        whatsapp,
+        email,
+        type,
+      } = req.body;
+
+      const property = await Property.findOne({
+        slug: req.params.slug,
+      });
+      if (!property) {
+        return res.status(404).json({ message: "Property not found" });
+      }
+
+      // Handle thumbnail update if a new one is uploaded
+      if (req.files && req.files.thumbnail) {
+        const thumbnailResult = await cloudinary.uploader.upload(
+          req.files.thumbnail[0].path,
+          {
+            folder: "real_estate_mern/property_thumbnail",
+            width: 500,
+            height: 500,
+          }
+        );
+        property.thumbnail = thumbnailResult.secure_url;
+      }
+
+      // Handle property photos update if new ones are uploaded
+      if (req.files && req.files.propertyPhotos) {
+        let photosUrls = [];
+        for (const file of req.files.propertyPhotos) {
+          const result = await cloudinary.uploader.upload(file.path, {
+            folder: "real_estate_mern/property_photos",
+            width: 500,
+            height: 500,
+          });
+          photosUrls.push(result.secure_url);
+        }
+        property.propertyPhotos = photosUrls;
+      }
+
+      // Update the other fields
+      property.title = title;
+      property.price = price;
+      property.area = area;
+      property.location = location;
+      property.city = city;
+      property.description = description;
+      property.whatsapp = whatsapp;
+      property.email = email;
+      property.type = type;
+
+      // Save updated property
+      property.save();
+
+      res.status(200).json({ message: "Property updated successfully" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+      console.log(error);
+    }
+  }
+);
+
 export default propertyRouter;

@@ -80,10 +80,6 @@ export default function Navbar() {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-56" align="end" forceMount>
                                     <DropdownMenuItem>
-                                        <User className="mr-2 h-4 w-4" />
-                                        <span>My Account</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>
                                         <BookmarkIcon className="mr-2 h-4 w-4" />
                                         <span>Saved Properties</span>
                                     </DropdownMenuItem>
@@ -167,9 +163,6 @@ export default function Navbar() {
                             {
                                 email ? (
                                     <>
-                                        <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => setIsOpen(false)}>
-                                            <User className="mr-2 h-4 w-4" /> My Account
-                                        </Button>
                                         <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => setIsOpen(false)}>
                                             <BookmarkIcon className="mr-2 h-4 w-4" /> Saved Properties
                                         </Button>

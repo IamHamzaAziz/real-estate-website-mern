@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useContext } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Building2, CalendarDays, Mail, MapPin, Ruler, MessageCircle } from "lucide-react"
+import { Building2, CalendarDays, Mail, MapPin, Ruler, MessageCircle, Edit, Bookmark, BookmarkX } from "lucide-react"
 import useEmblaCarousel from 'embla-carousel-react'
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import axios from "axios"
+import { UserContext } from "@/context/UserContext"
 
 interface Property {
     title: string,
@@ -19,6 +20,7 @@ interface Property {
     whatsapp: string,
     email: string,
     createdAt: Date,
+    slug: string,
 }
 
 const PropertyDetails = () => {
@@ -28,13 +30,28 @@ const PropertyDetails = () => {
 
     const [property, setProperty] = useState<Property>()
 
+    const [isSaved, setIsSaved] = useState(false)
+
+    const { setUserInfo, userInfo } = useContext(UserContext)
+
     const scrollNext = useCallback(() => {
         if (emblaApi) emblaApi.scrollNext()
     }, [emblaApi])
 
     useEffect(() => {
         fetchProperty()
+        checkLogin()
     }, [])
+
+    useEffect(() => {
+        if (emblaApi) {
+            const intervalId = setInterval(() => {
+                scrollNext()
+            }, 5000)
+
+            return () => clearInterval(intervalId)
+        }
+    }, [emblaApi, scrollNext])
 
     async function fetchProperty() {
         await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/property/get-property/${slug}`)
@@ -47,17 +64,17 @@ const PropertyDetails = () => {
             .catch(error => console.error(error))
     }
 
+    const checkLogin = async () => {
+        await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/profile`, { withCredentials: true })
+            .then((response) => {
+                setUserInfo(response.data)
+            })
+            .catch((error) => console.log(error))
+    }
 
-    useEffect(() => {
-        if (emblaApi) {
-            const intervalId = setInterval(() => {
-                scrollNext()
-            }, 5000)
 
-            return () => clearInterval(intervalId)
-        }
-    }, [emblaApi, scrollNext])
-
+    const isAdmin = userInfo ? userInfo.isAdmin : false
+    const email = userInfo ? userInfo.email : null
 
     return (
         <div className="container mx-auto px-10 py-8">
@@ -90,7 +107,36 @@ const PropertyDetails = () => {
                     </div>
                 </div>
                 <div>
-                    <h1 className="text-3xl font-bold mb-4">{property?.title}</h1>
+                    <div className="md:flex justify-between items-center mb-4">
+                        <h1 className="text-3xl font-bold">{property?.title}</h1>
+                        <div className="flex gap-2">
+                            {isAdmin && (
+                                <Link to={`/admin/update-property/${slug}`}>
+                                    <Button variant="outline">
+                                        <Edit className="w-4 h-4 mr-2" />
+                                        Edit
+                                    </Button>
+                                </Link>
+                            )}
+                            {
+                                email && (
+                                    <Button variant={isSaved ? "default" : "outline"}>
+                                        {
+                                            isSaved ? (
+                                                <BookmarkX className="w-4 h-4 mr-2" />
+                                            ) : (
+                                                <Bookmark className="w-4 h-4 mr-2" />
+                                            )
+                                        }
+                                        {/* <Bookmark className="w-4 h-4 mr-2" /> */}
+                                        {isSaved ? "Unsave" : "Save"}
+                                    </Button>
+                                )
+                            }
+
+                        </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <Card>
                             <CardContent className="flex items-center p-4">

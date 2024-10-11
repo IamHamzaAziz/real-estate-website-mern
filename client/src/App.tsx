@@ -18,6 +18,8 @@ import BlogDetails from './pages/BlogDetails';
 import PropertyDetails from './pages/PropertyDetails';
 import ContactMessages from './pages/admin/ContactMessages';
 import ManageBlogs from './pages/admin/ManageBlogs';
+import ManageProperties from './pages/admin/ManageProperties';
+import UpdateProperty from './pages/admin/UpdateProperty';
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
               <Route path='add-property' element={<AddProperty />} />
               <Route path='contact-messages' element={<ContactMessages />} />
               <Route path='manage-blogs' element={<ManageBlogs />} />
+              <Route path='manage-properties' element={<ManageProperties />} />
+              <Route path='update-property/:slug' element={<UpdateProperty />} />
             </Route>
           </Route>
         </Routes>

@@ -1,7 +1,7 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Navigate, useLocation } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { useState, useContext } from 'react';
 import { UserContext } from '@/context/UserContext';
@@ -11,6 +11,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const VerifyOTP = () => {
     const location = useLocation()
+
+    const navigate = useNavigate()
 
     const [otp, setOtp] = useState('')
     const [loading, setLoading] = useState(false)
@@ -48,9 +50,29 @@ const VerifyOTP = () => {
         }
 
         try {
+            if (location.state.forPasswordReset) {
+                await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/verify-otp`, { email, otp, passwordReset: true }, { withCredentials: true })
+                    .then(response => {
+                        if (response.status === 200) {
+                            navigate('/password-reset', { state: { email: email } })
+                        }
+                    })
+                    .catch(error => {
+                        failure('Failed to verify OTP')
+                        setLoading(false)
+                        console.log(error)
+                    })
+
+                return
+            }
+
             await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/auth/verify-otp`, { email, otp }, { withCredentials: true })
                 .then(response => {
                     if (response.status === 200) {
+                        if (location.state.forPasswordReset) {
+                            navigate('/password-reset', { state: { email: email } })
+                        }
+
                         setUserInfo({
                             _id: response.data._id,
                             email: response.data.email,

@@ -23,6 +23,8 @@ import UpdateProperty from './pages/admin/UpdateProperty';
 import SavedProperties from './pages/SavedProperties';
 import UpdateBlog from './pages/admin/UpdateBlog';
 import ManageUsers from './pages/admin/ManageUsers';
+import EnterEmailPassReset from './pages/EnterEmailPassReset';
+import PasswordReset from './pages/PasswordReset';
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
             <Route path='/blog/:slug' element={<BlogDetails />} />
             <Route path='/property/:slug' element={<PropertyDetails />} />
             <Route path='/saved-properties' element={<SavedProperties />} />
+            <Route path='/enter-email-password-reset' element={<EnterEmailPassReset />} />
+            <Route path='/password-reset' element={<PasswordReset />} />
 
             <Route path='/admin' element={<AdminDashboardLayout />}>
               <Route index element={<Dashboard />} />

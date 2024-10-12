@@ -153,6 +153,12 @@ const SignIn = () => {
                         <Link to="/sign-up" className="font-medium text-blue-800 underline">
                             Sign Up
                         </Link>
+                        <span className="block mt-2">
+                            Forgot Password?{" "}
+                            <Link to="/enter-email-password-reset" className="font-medium text-blue-800 underline">
+                                Click Here
+                            </Link>
+                        </span>
                     </div>
                 </div>
             </div>

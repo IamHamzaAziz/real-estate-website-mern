@@ -21,6 +21,7 @@ import ManageBlogs from './pages/admin/ManageBlogs';
 import ManageProperties from './pages/admin/ManageProperties';
 import UpdateProperty from './pages/admin/UpdateProperty';
 import SavedProperties from './pages/SavedProperties';
+import UpdateBlog from './pages/admin/UpdateBlog';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
               <Route path='manage-blogs' element={<ManageBlogs />} />
               <Route path='manage-properties' element={<ManageProperties />} />
               <Route path='update-property/:slug' element={<UpdateProperty />} />
+              <Route path='update-blog/:slug' element={<UpdateBlog />} />
             </Route>
           </Route>
         </Routes>

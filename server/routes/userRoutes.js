@@ -67,23 +67,7 @@ userRouter.post("/unsave-property", async (req, res) => {
 
 userRouter.get("/saved-properties", async (req, res) => {
   try {
-    const token = req.headers.authorization?.split(" ")[1]; // Expecting Bearer <token>
-
-    if (!token) {
-      return res
-        .status(401)
-        .json({ message: "No token provided, authorization denied" });
-    }
-
-    // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    if (!decoded || !decoded._id) {
-      return res.status(401).json({ message: "Invalid token" });
-    }
-
-    // Use the user ID from the decoded token
-    const userId = decoded._id;
+    const userId = req.query.userId;
 
     // Find the user and populate their saved properties
     const user = await User.findById(userId).populate("savedProperties");

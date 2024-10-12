@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { HomeIcon, MapPinIcon, CalendarIcon } from "lucide-react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import ContentLoader from "@/components/ContentLoader";
+import { UserContext } from "@/context/UserContext";
 
 interface Property {
     _id: string;
@@ -23,12 +24,20 @@ export default function SavedProperties() {
     const [properties, setProperties] = useState<Property[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const { userInfo } = useContext(UserContext)
+
+    const userId = userInfo ? userInfo._id : null
+
     useEffect(() => {
-        fetchSavedProperties();
-    }, []);
+        if (userId) {
+            fetchSavedProperties(); // Only fetch if userId exists
+        }
+    }, [userId]);
 
     const fetchSavedProperties = async () => {
-        await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user/saved-properties`, { withCredentials: true })
+        if (!userId) return
+
+        await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user/saved-properties`, { params: { userId }, withCredentials: true })
             .then(response => {
                 if (response.status === 200) {
                     setProperties(response.data)

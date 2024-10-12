@@ -4,6 +4,7 @@ import upload from "../middleware/multer.js";
 import { uploadPropertyPhotos } from "../middleware/multer.js";
 import cloudinary from "../utils/cloudinary.js";
 import slugify from "slugify";
+import User from "../models/UserModel.js";
 
 const propertyRouter = express();
 
@@ -200,5 +201,24 @@ propertyRouter.put(
     }
   }
 );
+
+propertyRouter.post("/check-saved-property", async (req, res) => {
+  const { userId, propertyId } = req.body;
+
+  try {
+    // Find the user by ID
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Check if the property is saved by the user
+    const isSaved = user.savedProperties.includes(propertyId);
+    res.status(200).json({ isSaved });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
 export default propertyRouter;

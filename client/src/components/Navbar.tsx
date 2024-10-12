@@ -79,10 +79,12 @@ export default function Navbar() {
                                     </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-56" align="end" forceMount>
-                                    <DropdownMenuItem>
-                                        <BookmarkIcon className="mr-2 h-4 w-4" />
-                                        <span>Saved Properties</span>
-                                    </DropdownMenuItem>
+                                    <Link to={'/saved-properties'}>
+                                        <DropdownMenuItem className='cursor-pointer'>
+                                            <BookmarkIcon className="mr-2 h-4 w-4" />
+                                            <span>Saved Properties</span>
+                                        </DropdownMenuItem>
+                                    </Link>
                                     {
                                         isAdmin && (
                                             <Link to={'/admin'}>
@@ -163,9 +165,11 @@ export default function Navbar() {
                             {
                                 email ? (
                                     <>
-                                        <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => setIsOpen(false)}>
-                                            <BookmarkIcon className="mr-2 h-4 w-4" /> Saved Properties
-                                        </Button>
+                                        <Link to={'/saved-properties'}>
+                                            <Button variant="outline" className="w-full border-white hover:bg-white text-p1" onClick={() => setIsOpen(false)}>
+                                                <BookmarkIcon className="mr-2 h-4 w-4" /> Saved Properties
+                                            </Button>
+                                        </Link>
                                         {
                                             isAdmin && (
                                                 <Link to={'/admin'} onClick={() => setIsOpen(false)}>

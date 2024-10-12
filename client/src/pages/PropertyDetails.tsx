@@ -22,6 +22,7 @@ interface Property {
     userId: string,
     createdAt: Date,
     slug: string,
+    _id: string
 }
 
 const PropertyDetails = () => {
@@ -36,15 +37,25 @@ const PropertyDetails = () => {
 
     const { setUserInfo, userInfo } = useContext(UserContext)
 
+    const isAdmin = userInfo ? userInfo.isAdmin : false
+    const userId = userInfo ? userInfo._id : null
+
 
     const scrollNext = useCallback(() => {
         if (emblaApi) emblaApi.scrollNext()
     }, [emblaApi])
 
     useEffect(() => {
-        fetchProperty()
         checkLogin()
+        checkIfPropertyIsSaved()
+        fetchProperty()
     }, [])
+
+    useEffect(() => {
+        if (userId && property?._id) {
+            checkIfPropertyIsSaved()
+        }
+    }, [userId, property?._id])
 
     useEffect(() => {
         if (emblaApi) {
@@ -61,7 +72,6 @@ const PropertyDetails = () => {
             .then(response => {
                 if (response.status === 200) {
                     setProperty(response.data)
-                    console.log(response.data)
                 }
             })
             .catch(error => console.error(error))
@@ -75,13 +85,38 @@ const PropertyDetails = () => {
             .catch((error) => console.log(error))
     }
 
+    const checkIfPropertyIsSaved = async () => {
+        if (!userId || !property?._id) return // Ensure both userId and propertyId are available
+
+        setSaveLoading(true)
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/property/check-saved-property`, { userId, propertyId: property._id }, { withCredentials: true })
+            .then(response => {
+                if (response.status === 200) {
+                    setIsSaved(response.data.isSaved)
+                }
+                setSaveLoading(false)
+            })
+            .catch(err => {
+                console.error(err)
+                setSaveLoading(false)
+            })
+    }
+
     const handleSaveProperty = async () => {
+        setSaveLoading(true)
         await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/user/save-property`, { slug, userId }, { withCredentials: true })
+        setSaveLoading(false)
         setIsSaved(!isSaved)
     }
 
-    const isAdmin = userInfo ? userInfo.isAdmin : false
-    const userId = userInfo ? userInfo._id : null
+    const handleUnSaveProperty = async () => {
+        setSaveLoading(true)
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/user/unsave-property`, { slug, userId }, { withCredentials: true })
+        setSaveLoading(false)
+        setIsSaved(!isSaved)
+    }
+
+
 
     return (
         <div className="container mx-auto px-10 py-8">
@@ -135,7 +170,7 @@ const PropertyDetails = () => {
                                             ) : (
                                                 isSaved ? (
                                                     <>
-                                                        <BookmarkX className="w-4 h-4 mr-2" onClick={handleSaveProperty} />
+                                                        <BookmarkX className="w-4 h-4 mr-2" onClick={handleUnSaveProperty} />
                                                         <span>Unsave</span>
                                                     </>
                                                 ) : (
@@ -146,14 +181,6 @@ const PropertyDetails = () => {
                                                 )
                                             )
                                         }
-                                        {/* {
-                                            isSaved ? (
-                                                <BookmarkX className="w-4 h-4 mr-2" onClick={handleSaveProperty} />
-                                            ) : (
-                                                <Bookmark className="w-4 h-4 mr-2" onClick={handleSaveProperty} />
-                                            )
-                                        }
-                                        {isSaved ? "Unsave" : "Save"} */}
                                     </Button>
                                 )
                             }

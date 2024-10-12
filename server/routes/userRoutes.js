@@ -1,6 +1,7 @@
 import express from "express";
 import Property from "../models/PropertyModel.js";
 import User from "../models/UserModel.js";
+import jwt from "jsonwebtoken";
 
 const userRouter = express();
 
@@ -36,27 +37,65 @@ userRouter.post("/save-property", async (req, res) => {
 });
 
 userRouter.post("/unsave-property", async (req, res) => {
-  const { userId, propertyId } = req.body;
+  const { userId, slug } = req.body;
 
   try {
     // Find the user by ID
     const user = await User.findById(userId);
+    const property = await Property.findOne({
+      slug: slug,
+    });
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     // Check if the property is in the savedProperties list
-    if (!user.savedProperties.includes(propertyId)) {
+    if (!user.savedProperties.includes(property._id)) {
       return res.status(400).json({ message: "Property is not saved" });
     }
 
     // Remove the property from savedProperties
-    user.savedProperties.pull(propertyId);
+    user.savedProperties.pull(property._id);
     await user.save();
 
     res.status(200).json({ message: "Property unsaved successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+userRouter.get("/saved-properties", async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split(" ")[1]; // Expecting Bearer <token>
+
+    if (!token) {
+      return res
+        .status(401)
+        .json({ message: "No token provided, authorization denied" });
+    }
+
+    // Verify the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (!decoded || !decoded._id) {
+      return res.status(401).json({ message: "Invalid token" });
+    }
+
+    // Use the user ID from the decoded token
+    const userId = decoded._id;
+
+    // Find the user and populate their saved properties
+    const user = await User.findById(userId).populate("savedProperties");
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(user.savedProperties);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
   }
 });
 

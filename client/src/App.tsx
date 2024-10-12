@@ -20,6 +20,7 @@ import ContactMessages from './pages/admin/ContactMessages';
 import ManageBlogs from './pages/admin/ManageBlogs';
 import ManageProperties from './pages/admin/ManageProperties';
 import UpdateProperty from './pages/admin/UpdateProperty';
+import SavedProperties from './pages/SavedProperties';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path='/verify-otp' element={<VerifyOTP />} />
             <Route path='/blog/:slug' element={<BlogDetails />} />
             <Route path='/property/:slug' element={<PropertyDetails />} />
+            <Route path='/saved-properties' element={<SavedProperties />} />
 
             <Route path='/admin' element={<AdminDashboardLayout />}>
               <Route index element={<Dashboard />} />

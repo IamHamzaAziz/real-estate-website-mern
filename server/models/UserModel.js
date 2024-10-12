@@ -7,7 +7,7 @@ const userSchema = new Schema(
     password: { type: String, required: true },
     isVerified: { type: Boolean, required: true, default: false },
     isAdmin: { type: Boolean, default: false },
-    savedBlogs: [{ type: Schema.Types.ObjectId, ref: "Blog" }],
+    savedProperties: [{ type: Schema.Types.ObjectId, ref: "Property" }],
   },
   {
     timestamps: true,

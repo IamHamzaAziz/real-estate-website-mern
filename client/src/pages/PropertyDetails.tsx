@@ -6,6 +6,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import { Link, useParams } from "react-router-dom"
 import axios from "axios"
 import { UserContext } from "@/context/UserContext"
+import { ThreeCircles } from "react-loader-spinner"
 
 interface Property {
     title: string,
@@ -18,7 +19,7 @@ interface Property {
     thumbnail: string,
     propertyPhotos: string[],
     whatsapp: string,
-    email: string,
+    userId: string,
     createdAt: Date,
     slug: string,
 }
@@ -31,8 +32,10 @@ const PropertyDetails = () => {
     const [property, setProperty] = useState<Property>()
 
     const [isSaved, setIsSaved] = useState(false)
+    const [saveLoading, setSaveLoading] = useState(false)
 
     const { setUserInfo, userInfo } = useContext(UserContext)
+
 
     const scrollNext = useCallback(() => {
         if (emblaApi) emblaApi.scrollNext()
@@ -72,9 +75,13 @@ const PropertyDetails = () => {
             .catch((error) => console.log(error))
     }
 
+    const handleSaveProperty = async () => {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/user/save-property`, { slug, userId }, { withCredentials: true })
+        setIsSaved(!isSaved)
+    }
 
     const isAdmin = userInfo ? userInfo.isAdmin : false
-    const email = userInfo ? userInfo.email : null
+    const userId = userInfo ? userInfo._id : null
 
     return (
         <div className="container mx-auto px-10 py-8">
@@ -119,17 +126,34 @@ const PropertyDetails = () => {
                                 </Link>
                             )}
                             {
-                                email && (
+                                userId && (
+
                                     <Button variant={isSaved ? "default" : "outline"}>
                                         {
-                                            isSaved ? (
-                                                <BookmarkX className="w-4 h-4 mr-2" />
+                                            saveLoading ? (
+                                                <ThreeCircles height={15} color="black" />
                                             ) : (
-                                                <Bookmark className="w-4 h-4 mr-2" />
+                                                isSaved ? (
+                                                    <>
+                                                        <BookmarkX className="w-4 h-4 mr-2" onClick={handleSaveProperty} />
+                                                        <span>Unsave</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Bookmark className="w-4 h-4 mr-2" onClick={handleSaveProperty} />
+                                                        <span>Save</span>
+                                                    </>
+                                                )
                                             )
                                         }
-                                        {/* <Bookmark className="w-4 h-4 mr-2" /> */}
-                                        {isSaved ? "Unsave" : "Save"}
+                                        {/* {
+                                            isSaved ? (
+                                                <BookmarkX className="w-4 h-4 mr-2" onClick={handleSaveProperty} />
+                                            ) : (
+                                                <Bookmark className="w-4 h-4 mr-2" onClick={handleSaveProperty} />
+                                            )
+                                        }
+                                        {isSaved ? "Unsave" : "Save"} */}
                                     </Button>
                                 )
                             }
@@ -196,7 +220,7 @@ const PropertyDetails = () => {
                         </Button>
                         <Button className="w-full" variant="outline">
                             <Mail className="w-5 h-5 mr-2" />
-                            <a href={`mailto:${property?.email}`}>Contact via Email</a>
+                            <a href={`mailto:${property?.userId}`}>Contact via userId</a>
                         </Button>
                     </div>
                 </div>

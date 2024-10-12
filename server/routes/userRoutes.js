@@ -83,4 +83,51 @@ userRouter.get("/saved-properties", async (req, res) => {
   }
 });
 
+userRouter.get("/", async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 8;
+
+    const skip = (page - 1) * limit;
+
+    const users = await User.find({}, { updatedAt: 0 }).skip(skip).limit(limit);
+    res.json(users);
+  } catch (error) {
+    res.status(500).json("Server Error");
+    console.error(error);
+  }
+});
+
+userRouter.post("/search", async (req, res) => {
+  try {
+    const { email } = req.body;
+    const users = await User.find({ email: { $regex: email, $options: "i" } }); // 'i' for case-insensitive search
+    res.json(users);
+  } catch (error) {
+    res.status(500).json("Server Error");
+    console.error(error);
+  }
+});
+
+userRouter.put("/toggle-admin/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.isAdmin = !user.isAdmin; // Toggle admin status
+    await user.save();
+
+    res
+      .status(200)
+      .json({ message: "User admin status updated", isAdmin: user.isAdmin });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.error(error);
+  }
+});
+
 export default userRouter;

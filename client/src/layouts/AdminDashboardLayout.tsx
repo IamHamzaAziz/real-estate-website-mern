@@ -13,7 +13,7 @@ const AdminDashboardLayout = () => {
         { icon: PlusCircle, label: "Add Property", href: "/admin/add-property" },
         { icon: Building, label: "Manage Properties", href: "/admin/manage-properties" },
         { icon: MessageSquare, label: "Contact Messages", href: "/admin/contact-messages" },
-        { icon: Users, label: "Manage Users", href: "/admin/users" },
+        { icon: Users, label: "Manage Users", href: "/admin/manage-users" },
     ]
 
     document.title = "Admin Panel"

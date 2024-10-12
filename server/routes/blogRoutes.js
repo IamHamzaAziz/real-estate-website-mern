@@ -125,4 +125,18 @@ blogRouter.put(
   }
 );
 
+blogRouter.post("/search", async (req, res) => {
+  try {
+    const { title } = req.body;
+    const blogs = await Blog.find(
+      { title: { $regex: title, $options: "i" } },
+      { content: 0, updatedAt: 0 }
+    );
+    res.json(blogs);
+  } catch (error) {
+    res.status(500).json("Server Error");
+    console.error(error);
+  }
+});
+
 export default blogRouter;

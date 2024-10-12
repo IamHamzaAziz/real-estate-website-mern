@@ -19,6 +19,8 @@ const ManageBlogs = () => {
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
 
+    const [searchTerm, setSearchTerm] = useState("")
+
     useEffect(() => {
         fetchBlogs()
     }, [])
@@ -41,6 +43,20 @@ const ManageBlogs = () => {
         fetchBlogs()
     }
 
+    const handleSearch = async () => {
+        if (!searchTerm) {
+            return;
+        }
+
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/blog/search`, { title: searchTerm });
+            setBlogs(response.data);
+            setHasMore(false); // Disable infinite scroll since it's not paginated
+        } catch (error) {
+            console.error("Error fetching searched users:", error);
+        }
+    };
+
 
     return (
         <div className="container mx-auto px-4">
@@ -51,9 +67,12 @@ const ManageBlogs = () => {
                     type="text"
                     placeholder="Search blogs..."
                     className="flex-grow px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <button
                     className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 flex items-center justify-center"
+                    onClick={handleSearch}
                 >
                     <SearchIcon className="w-5 h-5 mr-2" />
                     Search Blogs

@@ -11,8 +11,11 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { UserContext } from '@/context/UserContext'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 export default function Navbar() {
+    const navigate = useNavigate()
+
     const [isOpen, setIsOpen] = useState(false)
 
     const { setUserInfo, userInfo } = useContext(UserContext)
@@ -37,9 +40,8 @@ export default function Navbar() {
             await axios.post('http://localhost:4000/api/auth/logout', {}, { withCredentials: true })
                 .then(() => {
                     setUserInfo({})
+                    navigate('/')
                 })
-
-            console.log('Logout successful')
         } catch (error) {
             console.log(error)
         }

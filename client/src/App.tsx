@@ -25,6 +25,9 @@ import UpdateBlog from './pages/admin/UpdateBlog';
 import ManageUsers from './pages/admin/ManageUsers';
 import EnterEmailPassReset from './pages/EnterEmailPassReset';
 import PasswordReset from './pages/PasswordReset';
+import LogoutReq from './protected_routes/LogoutReq';
+import LoginReq from './protected_routes/LoginReq';
+import OnlyAdmin from './protected_routes/OnlyAdmin';
 
 function App() {
   return (
@@ -34,19 +37,19 @@ function App() {
           <Route path='/' element={<PageLayout />}>
             <Route index element={<Home />} />
             <Route path='/contact' element={<Contact />} />
-            <Route path='/sign-up' element={<SignUp />} />
-            <Route path='/sign-in' element={<SignIn />} />
+            <Route path='/sign-up' element={<LogoutReq><SignUp /></LogoutReq>} />
+            <Route path='/sign-in' element={<LogoutReq><SignIn /></LogoutReq>} />
             <Route path='/team' element={<Team />} />
             <Route path='/properties' element={<Properties />} />
             <Route path='/blogs' element={<Blogs />} />
             <Route path='/verify-otp' element={<VerifyOTP />} />
             <Route path='/blog/:slug' element={<BlogDetails />} />
             <Route path='/property/:slug' element={<PropertyDetails />} />
-            <Route path='/saved-properties' element={<SavedProperties />} />
+            <Route path='/saved-properties' element={<LoginReq><SavedProperties /></LoginReq>} />
             <Route path='/enter-email-password-reset' element={<EnterEmailPassReset />} />
             <Route path='/password-reset' element={<PasswordReset />} />
 
-            <Route path='/admin' element={<AdminDashboardLayout />}>
+            <Route path='/admin' element={<OnlyAdmin><AdminDashboardLayout /></OnlyAdmin>}>
               <Route index element={<Dashboard />} />
               <Route path='add-blog' element={<AddBlog />} />
               <Route path='add-property' element={<AddProperty />} />

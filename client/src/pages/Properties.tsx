@@ -33,6 +33,8 @@ export default function Properties() {
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
 
+    const [loading, setLoading] = useState(false)
+
     const [addFiltersLoading, setAddFiltersLoading] = useState(false)
 
     const [city, setCity] = useState('')
@@ -43,6 +45,7 @@ export default function Properties() {
     }, [])
 
     const fetchProperties = async (reset: boolean = false) => {
+        setLoading(true)
         if (reset) {
             setPage(1)
             setProperties([])
@@ -66,9 +69,13 @@ export default function Properties() {
                     }
                     setHasMore(response.data.length > 0);
                     setPage(page + 1);
+                    setLoading(false)
                 }
             })
-            .catch(error => console.log(error))
+            .catch(error => {
+                console.log(error)
+                setLoading(false)
+            })
     }
 
     const applyFilters = () => {
@@ -187,7 +194,7 @@ export default function Properties() {
             </InfiniteScroll>
 
             {
-                properties.length === 0 && (
+                !loading && properties.length === 0 && (
                     <div className="text-center mt-8">
                         No properties found
                     </div>

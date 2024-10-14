@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react'
-import { Home, Building2, BookOpen, Users, Phone, LogIn, Menu, Building, User, BookmarkIcon, Gauge, LogOut } from 'lucide-react'
+import { Home, Building2, BookOpen, Users, Phone, LogIn, Menu, Building, User, BookmarkIcon, Gauge, LogOut, Info } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Link } from 'react-router-dom'
@@ -137,6 +137,13 @@ export default function Navbar() {
                             >
                                 <Home className="h-5 w-5" />
                                 <span>Home</span>
+                            </Link>
+                            <Link to={'/about'}
+                                className="flex items-center space-x-2 hover:text-gray-300"
+                                onClick={() => { setIsOpen(false); }}
+                            >
+                                <Info className="h-5 w-5" />
+                                <span>About</span>
                             </Link>
                             <Link to={'/properties'}
                                 className="flex items-center space-x-2 hover:text-gray-300"

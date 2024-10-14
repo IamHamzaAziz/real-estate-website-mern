@@ -97,6 +97,13 @@ const About = () => {
                 <section className="w-full py-12 md:py-24 lg:py-32 bg-white">
                     <div className="container px-4 md:px-6">
                         <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+                            <img
+                                alt="SkyEstate Vision"
+                                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center shadow-lg"
+                                height="310"
+                                src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                width="550"
+                            />
                             <div className="flex flex-col justify-center space-y-4">
                                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Our Vision</h2>
                                 <p className="max-w-[600px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -109,13 +116,6 @@ const About = () => {
                                     <li>Empowering our clients with knowledge and resources for informed decision-making</li>
                                 </ul>
                             </div>
-                            <img
-                                alt="SkyEstate Vision"
-                                className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center shadow-lg"
-                                height="310"
-                                src="https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                                width="550"
-                            />
                         </div>
                     </div>
                 </section>

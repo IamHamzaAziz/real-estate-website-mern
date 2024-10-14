@@ -59,6 +59,9 @@ export default function Navbar() {
                     <Link to={'/'} className="hover:text-p2 cursor-pointer font-bold">
                         Home
                     </Link>
+                    <Link to={'/about'} className="hover:text-p2 cursor-pointer font-bold">
+                        About
+                    </Link>
                     <Link to={'/properties'} className="hover:text-p2 cursor-pointer font-bold">
                         Properties
                     </Link>

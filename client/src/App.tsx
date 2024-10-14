@@ -28,6 +28,7 @@ import PasswordReset from './pages/PasswordReset';
 import LogoutReq from './protected_routes/LogoutReq';
 import LoginReq from './protected_routes/LoginReq';
 import OnlyAdmin from './protected_routes/OnlyAdmin';
+import About from './pages/About';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Routes>
           <Route path='/' element={<PageLayout />}>
             <Route index element={<Home />} />
+            <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/sign-up' element={<LogoutReq><SignUp /></LogoutReq>} />
             <Route path='/sign-in' element={<LogoutReq><SignIn /></LogoutReq>} />

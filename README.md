@@ -71,3 +71,19 @@ For client or frontend
 ```
 VITE_SERVER_URL
 ```
+
+### Run Project
+
+In order to run server or backend, follow below commands in terminal
+
+```
+cd server
+nodemon index.js
+```
+
+Now in order to run the client side or frontend, use below commands in terminal
+
+```
+cd client
+npm run dev
+```

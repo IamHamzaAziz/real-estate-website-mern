@@ -87,3 +87,16 @@ Now in order to run the client side or frontend, use below commands in terminal
 cd client
 npm run dev
 ```
+
+## Screenshots
+
+Below are some screenshots of this website
+![Home Page](/screenshots/s1.png "Home Page")
+![Sign In Page](/screenshots/s2.png "Sign In Page")
+![Sign Up Page](/screenshots/s3.png "Sign Up Page")
+![Properties Page](/screenshots/s4.png "Properties Page")
+![Property Details Page](/screenshots/s5.png "Property Details Page")
+![Blogs Page](/screenshots/s6.png "Blogs Page")
+![Blog Details Page](/screenshots/s7.png "Blog Details Page")
+![Contact Page](/screenshots/s8.png "Contact Page")
+![Admin Panel](/screenshots/s9.png "Admin Panel")

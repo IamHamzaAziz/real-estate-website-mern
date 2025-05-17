@@ -7,7 +7,7 @@ import authRouter from "./routes/authRoutes.js";
 import blogRouter from "./routes/blogRoutes.js";
 import propertyRouter from "./routes/propertyRoutes.js";
 import contactRouter from "./routes/contactRoutes.js";
-import adminRouter from "./routes/adminRoutes.js";
+import adminRouter from "./routes/admin.route.js";
 import userRouter from "./routes/userRoutes.js";
 
 dotenv.config();

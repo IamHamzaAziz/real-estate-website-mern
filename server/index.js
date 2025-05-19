@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/authRoutes.js";
 import blogRouter from "./routes/blogRoutes.js";
-import propertyRouter from "./routes/propertyRoutes.js";
+import propertyRouter from "./routes/property.route.js";
 import contactRouter from "./routes/contact.route.js";
 import adminRouter from "./routes/admin.route.js";
 import userRouter from "./routes/userRoutes.js";

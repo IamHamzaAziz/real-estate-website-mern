@@ -3,7 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import authRouter from "./routes/authRoutes.js";
+import authRouter from "./routes/auth.route.js";
 import blogRouter from "./routes/blog.route.js";
 import propertyRouter from "./routes/property.route.js";
 import contactRouter from "./routes/contact.route.js";

@@ -1,5 +1,5 @@
-import User from "../models/UserModel.js";
-import OTP from "../models/OTPModel.js";
+import User from "../models/user.model.js";
+import OTP from "../models/otp.model.js";
 import bycrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";

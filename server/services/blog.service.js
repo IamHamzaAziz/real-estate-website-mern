@@ -1,4 +1,4 @@
-import Blog from "../models/BlogModel.js";
+import Blog from "../models/blog.model.js";
 import cloudinary from "../utils/cloudinary.js";
 import slugify from "slugify";
 

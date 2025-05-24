@@ -1,4 +1,4 @@
-import ContactMessage from "../models/ContactMessageModel.js";
+import ContactMessage from "../models/contact_message.model.js";
 import nodemailer from "nodemailer";
 
 // Nodemailer configuration

@@ -1,7 +1,7 @@
-import UserModel from "../models/UserModel.js";
-import Blog from "../models/BlogModel.js";
-import ContactMessage from "../models/ContactMessageModel.js";
-import Property from "../models/PropertyModel.js";
+import UserModel from "../models/user.model.js";
+import Blog from "../models/blog.model.js";
+import ContactMessage from "../models/contact_message.model.js";
+import Property from "../models/property.model.js";
 
 export const getAdminStats = async () => {
   try {

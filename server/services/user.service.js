@@ -1,5 +1,4 @@
-import User from "../models/user.model.js";
-import Property from "../models/property.model.js";
+import { User, Property } from "../models/index.js";
 
 export async function saveProperty(userId, slug) {
   const user = await User.findById(userId);

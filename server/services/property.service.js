@@ -1,5 +1,4 @@
-import Property from "../models/property.model.js";
-import User from "../models/user.model.js";
+import { User, Property } from "../models/index.js";
 import cloudinary from "../utils/cloudinary.js";
 import slugify from "slugify";
 

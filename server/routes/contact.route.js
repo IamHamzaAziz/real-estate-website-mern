@@ -1,14 +1,10 @@
 import express from "express";
-import {
-  createMessage,
-  getMessages,
-  deleteMessage,
-} from "../controllers/contact.controller.js";
+import { contactController } from "../controllers/index.js";
 
 const contactRouter = express.Router();
 
-contactRouter.post("/", createMessage);
-contactRouter.get("/", getMessages);
-contactRouter.delete("/:id", deleteMessage);
+contactRouter.post("/", contactController.createMessage);
+contactRouter.get("/", contactController.getMessages);
+contactRouter.delete("/:id", contactController.deleteMessage);
 
 export default contactRouter;

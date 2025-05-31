@@ -1,6 +1,6 @@
 import express from "express";
 import upload from "../middleware/multer.js";
-import * as blogController from "../controllers/blog.controller.js";
+import { blogController } from "../controllers/index.js";
 
 const blogRouter = express();
 

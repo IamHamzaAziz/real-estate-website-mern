@@ -1,7 +1,7 @@
 import * as propertyService from "../services/property.service.js";
 
 // Create Property
-export const createPropertyController = async (req, res) => {
+export const createProperty = async (req, res) => {
   try {
     const result = await propertyService.createProperty(req);
     res.status(200).json({ message: "Property created successfully" });
@@ -12,7 +12,7 @@ export const createPropertyController = async (req, res) => {
 };
 
 // Get All Properties
-export const getAllPropertiesController = async (req, res) => {
+export const getAllProperties = async (req, res) => {
   try {
     const properties = await propertyService.getAllProperties(req);
     res.json(properties);
@@ -23,7 +23,7 @@ export const getAllPropertiesController = async (req, res) => {
 };
 
 // Get Property by Slug
-export const getPropertyBySlugController = async (req, res) => {
+export const getPropertyBySlug = async (req, res) => {
   try {
     const property = await propertyService.getPropertyBySlug(req.params.slug);
     if (!property) {
@@ -37,7 +37,7 @@ export const getPropertyBySlugController = async (req, res) => {
 };
 
 // Update Property
-export const updatePropertyController = async (req, res) => {
+export const updateProperty = async (req, res) => {
   try {
     await propertyService.updateProperty(req);
     res.status(200).json({ message: "Property updated successfully" });
@@ -48,7 +48,7 @@ export const updatePropertyController = async (req, res) => {
 };
 
 // Check Saved Property
-export const checkSavedPropertyController = async (req, res) => {
+export const checkSavedProperty = async (req, res) => {
   try {
     const isSaved = await propertyService.checkSavedProperty(req.body.userId, req.body.propertyId);
     res.status(200).json({ isSaved });

@@ -19,6 +19,7 @@ interface Property {
     thumbnail: string,
     propertyPhotos: string[],
     whatsapp: string,
+    email: string,
     userId: string,
     createdAt: Date,
     slug: string,
@@ -39,7 +40,6 @@ const PropertyDetails = () => {
 
     const isAdmin = userInfo ? userInfo.isAdmin : false
     const userId = userInfo ? userInfo._id : null
-
 
     const scrollNext = useCallback(() => {
         if (emblaApi) emblaApi.scrollNext()
@@ -247,7 +247,7 @@ const PropertyDetails = () => {
                         </Button>
                         <Button className="w-full" variant="outline">
                             <Mail className="w-5 h-5 mr-2" />
-                            <a href={`mailto:${property?.userId}`}>Contact via userId</a>
+                            <a href={`mailto:${property?.email}`}>Contact via email</a>
                         </Button>
                     </div>
                 </div>

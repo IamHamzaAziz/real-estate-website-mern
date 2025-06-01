@@ -1,4 +1,4 @@
-import * as userService from "../services/user.service.js";
+import { userService } from "../services/index.js";
 
 export async function saveProperty(req, res) {
   const { userId, slug } = req.body;

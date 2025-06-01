@@ -1,4 +1,4 @@
-import * as propertyService from "../services/property.service.js";
+import { propertyService } from "../services/index.js";
 
 // Create Property
 export const createProperty = async (req, res) => {

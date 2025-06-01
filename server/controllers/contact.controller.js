@@ -1,4 +1,4 @@
-import * as contactService from '../services/contact.service.js'
+import { contactService } from '../services/index.js';
 
 // Validate email format
 const validateEmail = (email) => {

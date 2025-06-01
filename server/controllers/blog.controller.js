@@ -1,4 +1,4 @@
-import * as blogService from "../services/blog.service.js";
+import { blogService } from "../services/index.js";
 
 export async function getBlogs(req, res) {
   try {

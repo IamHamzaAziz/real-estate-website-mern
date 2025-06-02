@@ -3,12 +3,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import authRouter from "./routes/auth.route.js";
-import blogRouter from "./routes/blog.route.js";
-import propertyRouter from "./routes/property.route.js";
-import contactRouter from "./routes/contact.route.js";
-import adminRouter from "./routes/admin.route.js";
-import userRouter from "./routes/user.route.js";
+import { adminRouter, authRouter, blogRouter, contactRouter, propertyRouter, userRouter } from "./routes/index.js";
 
 dotenv.config();
 

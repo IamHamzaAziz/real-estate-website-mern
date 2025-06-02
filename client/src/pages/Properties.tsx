@@ -69,8 +69,8 @@ export default function Properties() {
                     }
                     setHasMore(response.data.length > 0);
                     setPage(page + 1);
-                    setLoading(false)
                 }
+                setLoading(false)
             })
             .catch(error => {
                 console.log(error)

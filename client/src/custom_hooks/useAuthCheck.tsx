@@ -24,7 +24,7 @@ export const useAuthCheck = () => {
         checkLogin();
     }, [setUserInfo]);
 
-    return { loading, userId: userInfo?._id };
+    return { loading, userId: userInfo?._id, isAdmin: userInfo?.isAdmin };
 };
 
 export const LoadingIndicator = () => (

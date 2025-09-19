@@ -28,4 +28,6 @@ app.use("/api/contact", contactRouter);
 app.use("/api/admin", adminRouter);
 app.use("/api/user", userRouter);
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on port ${process.env.PORT}`);
+});

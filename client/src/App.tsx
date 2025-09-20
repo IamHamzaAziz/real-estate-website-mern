@@ -12,7 +12,9 @@ function App() {
   return (
     <UserContextProvider>
       <BrowserRouter>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={
+          <div>Loading...</div>
+        }>
           <AppRoutes />
         </Suspense>
       </BrowserRouter>

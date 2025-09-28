@@ -14,10 +14,18 @@ const authRoutes = {
   path: "/",
   element: <PageLayout />,
   children: [
-    { path: "sign-up", element: <LogoutReq><SignUp /></LogoutReq> },
-    { path: "sign-in", element: <LogoutReq><SignIn /></LogoutReq> },
+    {
+      element: <LogoutReq />, // parent wrapper
+      children: [
+        { path: "sign-up", element: <SignUp /> },
+        { path: "sign-in", element: <SignIn /> },
+      ],
+    },
     { path: "verify-otp", element: <VerifyOTP /> },
-    { path: "saved-properties", element: <LoginReq><SavedProperties /></LoginReq> },
+    {
+      path: "saved-properties",
+      element: <LoginReq><SavedProperties /></LoginReq>
+    },
     { path: "enter-email-password-reset", element: <EnterEmailPassReset /> },
     { path: "password-reset", element: <PasswordReset /> },
   ],
